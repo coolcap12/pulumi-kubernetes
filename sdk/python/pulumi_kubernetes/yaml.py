@@ -979,12 +979,6 @@ def _parse_yaml_object(
         return [identifier.apply(
             lambda x: (f"v1/EndpointsList:{x}",
                        EndpointsList(f"{x}", opts, **obj)))]
-    if gvk == "v1/EphemeralContainers":
-        # Import locally to avoid name collisions.
-        from pulumi_kubernetes.core.v1 import EphemeralContainers
-        return [identifier.apply(
-            lambda x: (f"v1/EphemeralContainers:{x}",
-                       EphemeralContainers(f"{x}", opts, **obj)))]
     if gvk == "v1/Event":
         # Import locally to avoid name collisions.
         from pulumi_kubernetes.core.v1 import Event
@@ -1357,18 +1351,6 @@ def _parse_yaml_object(
         return [identifier.apply(
             lambda x: (f"networking.k8s.io/v1beta1/Ingress:{x}",
                        Ingress(f"{x}", opts, **obj)))]
-    if gvk == "networking.k8s.io/v1beta1/IngressClass":
-        # Import locally to avoid name collisions.
-        from pulumi_kubernetes.networking.v1beta1 import IngressClass
-        return [identifier.apply(
-            lambda x: (f"networking.k8s.io/v1beta1/IngressClass:{x}",
-                       IngressClass(f"{x}", opts, **obj)))]
-    if gvk == "networking.k8s.io/v1beta1/IngressClassList":
-        # Import locally to avoid name collisions.
-        from pulumi_kubernetes.networking.v1beta1 import IngressClassList
-        return [identifier.apply(
-            lambda x: (f"networking.k8s.io/v1beta1/IngressClassList:{x}",
-                       IngressClassList(f"{x}", opts, **obj)))]
     if gvk == "networking.k8s.io/v1beta1/IngressList":
         # Import locally to avoid name collisions.
         from pulumi_kubernetes.networking.v1beta1 import IngressList

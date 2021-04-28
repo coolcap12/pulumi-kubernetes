@@ -6,14 +6,10 @@ import * as utilities from "../../utilities";
 
 // Export members:
 export * from "./ingress";
-export * from "./ingressClass";
-export * from "./ingressClassList";
 export * from "./ingressList";
 
 // Import resources to register:
 import { Ingress } from "./ingress";
-import { IngressClass } from "./ingressClass";
-import { IngressClassList } from "./ingressClassList";
 import { IngressList } from "./ingressList";
 
 const _module = {
@@ -22,10 +18,6 @@ const _module = {
         switch (type) {
             case "kubernetes:networking.k8s.io/v1beta1:Ingress":
                 return new Ingress(name, <any>undefined, { urn })
-            case "kubernetes:networking.k8s.io/v1beta1:IngressClass":
-                return new IngressClass(name, <any>undefined, { urn })
-            case "kubernetes:networking.k8s.io/v1beta1:IngressClassList":
-                return new IngressClassList(name, <any>undefined, { urn })
             case "kubernetes:networking.k8s.io/v1beta1:IngressList":
                 return new IngressList(name, <any>undefined, { urn })
             default:

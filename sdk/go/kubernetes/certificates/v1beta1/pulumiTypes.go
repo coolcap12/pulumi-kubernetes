@@ -145,17 +145,13 @@ func (o CertificateSigningRequestTypeArrayOutput) Index(i pulumi.IntInput) Certi
 }
 
 type CertificateSigningRequestCondition struct {
-	// lastTransitionTime is the time the condition last transitioned from one status to another. If unset, when a new condition type is added or an existing condition's status is changed, the server defaults this to the current time.
-	LastTransitionTime *string `pulumi:"lastTransitionTime"`
 	// timestamp for the last update to this condition
 	LastUpdateTime *string `pulumi:"lastUpdateTime"`
 	// human readable message with details about the request state
 	Message *string `pulumi:"message"`
 	// brief reason for the request state
 	Reason *string `pulumi:"reason"`
-	// Status of the condition, one of True, False, Unknown. Approved, Denied, and Failed conditions may not be "False" or "Unknown". Defaults to "True". If unset, should be treated as "True".
-	Status *string `pulumi:"status"`
-	// type of the condition. Known conditions include "Approved", "Denied", and "Failed".
+	// request approval state, currently Approved or Denied.
 	Type string `pulumi:"type"`
 }
 
@@ -171,17 +167,13 @@ type CertificateSigningRequestConditionInput interface {
 }
 
 type CertificateSigningRequestConditionArgs struct {
-	// lastTransitionTime is the time the condition last transitioned from one status to another. If unset, when a new condition type is added or an existing condition's status is changed, the server defaults this to the current time.
-	LastTransitionTime pulumi.StringPtrInput `pulumi:"lastTransitionTime"`
 	// timestamp for the last update to this condition
 	LastUpdateTime pulumi.StringPtrInput `pulumi:"lastUpdateTime"`
 	// human readable message with details about the request state
 	Message pulumi.StringPtrInput `pulumi:"message"`
 	// brief reason for the request state
 	Reason pulumi.StringPtrInput `pulumi:"reason"`
-	// Status of the condition, one of True, False, Unknown. Approved, Denied, and Failed conditions may not be "False" or "Unknown". Defaults to "True". If unset, should be treated as "True".
-	Status pulumi.StringPtrInput `pulumi:"status"`
-	// type of the condition. Known conditions include "Approved", "Denied", and "Failed".
+	// request approval state, currently Approved or Denied.
 	Type pulumi.StringInput `pulumi:"type"`
 }
 
@@ -236,11 +228,6 @@ func (o CertificateSigningRequestConditionOutput) ToCertificateSigningRequestCon
 	return o
 }
 
-// lastTransitionTime is the time the condition last transitioned from one status to another. If unset, when a new condition type is added or an existing condition's status is changed, the server defaults this to the current time.
-func (o CertificateSigningRequestConditionOutput) LastTransitionTime() pulumi.StringPtrOutput {
-	return o.ApplyT(func(v CertificateSigningRequestCondition) *string { return v.LastTransitionTime }).(pulumi.StringPtrOutput)
-}
-
 // timestamp for the last update to this condition
 func (o CertificateSigningRequestConditionOutput) LastUpdateTime() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v CertificateSigningRequestCondition) *string { return v.LastUpdateTime }).(pulumi.StringPtrOutput)
@@ -256,12 +243,7 @@ func (o CertificateSigningRequestConditionOutput) Reason() pulumi.StringPtrOutpu
 	return o.ApplyT(func(v CertificateSigningRequestCondition) *string { return v.Reason }).(pulumi.StringPtrOutput)
 }
 
-// Status of the condition, one of True, False, Unknown. Approved, Denied, and Failed conditions may not be "False" or "Unknown". Defaults to "True". If unset, should be treated as "True".
-func (o CertificateSigningRequestConditionOutput) Status() pulumi.StringPtrOutput {
-	return o.ApplyT(func(v CertificateSigningRequestCondition) *string { return v.Status }).(pulumi.StringPtrOutput)
-}
-
-// type of the condition. Known conditions include "Approved", "Denied", and "Failed".
+// request approval state, currently Approved or Denied.
 func (o CertificateSigningRequestConditionOutput) Type() pulumi.StringOutput {
 	return o.ApplyT(func(v CertificateSigningRequestCondition) string { return v.Type }).(pulumi.StringOutput)
 }
@@ -367,42 +349,10 @@ type CertificateSigningRequestSpec struct {
 	Groups []string `pulumi:"groups"`
 	// Base64-encoded PKCS#10 CSR data
 	Request string `pulumi:"request"`
-	// Requested signer for the request. It is a qualified name in the form: `scope-hostname.io/name`. If empty, it will be defaulted:
-	//  1. If it's a kubelet client certificate, it is assigned
-	//     "kubernetes.io/kube-apiserver-client-kubelet".
-	//  2. If it's a kubelet serving certificate, it is assigned
-	//     "kubernetes.io/kubelet-serving".
-	//  3. Otherwise, it is assigned "kubernetes.io/legacy-unknown".
-	//     Distribution of trust for signers happens out of band. You can select on this field using `spec.signerName`.
-	SignerName *string `pulumi:"signerName"`
 	// UID information about the requesting user. See user.Info interface for details.
 	Uid *string `pulumi:"uid"`
 	// allowedUsages specifies a set of usage contexts the key will be valid for. See: https://tools.ietf.org/html/rfc5280#section-4.2.1.3
 	//      https://tools.ietf.org/html/rfc5280#section-4.2.1.12
-	// Valid values are:
-	//  "signing",
-	//  "digital signature",
-	//  "content commitment",
-	//  "key encipherment",
-	//  "key agreement",
-	//  "data encipherment",
-	//  "cert sign",
-	//  "crl sign",
-	//  "encipher only",
-	//  "decipher only",
-	//  "any",
-	//  "server auth",
-	//  "client auth",
-	//  "code signing",
-	//  "email protection",
-	//  "s/mime",
-	//  "ipsec end system",
-	//  "ipsec tunnel",
-	//  "ipsec user",
-	//  "timestamping",
-	//  "ocsp signing",
-	//  "microsoft sgc",
-	//  "netscape sgc"
 	Usages []string `pulumi:"usages"`
 	// Information about the requesting user. See user.Info interface for details.
 	Username *string `pulumi:"username"`
@@ -427,42 +377,10 @@ type CertificateSigningRequestSpecArgs struct {
 	Groups pulumi.StringArrayInput `pulumi:"groups"`
 	// Base64-encoded PKCS#10 CSR data
 	Request pulumi.StringInput `pulumi:"request"`
-	// Requested signer for the request. It is a qualified name in the form: `scope-hostname.io/name`. If empty, it will be defaulted:
-	//  1. If it's a kubelet client certificate, it is assigned
-	//     "kubernetes.io/kube-apiserver-client-kubelet".
-	//  2. If it's a kubelet serving certificate, it is assigned
-	//     "kubernetes.io/kubelet-serving".
-	//  3. Otherwise, it is assigned "kubernetes.io/legacy-unknown".
-	//     Distribution of trust for signers happens out of band. You can select on this field using `spec.signerName`.
-	SignerName pulumi.StringPtrInput `pulumi:"signerName"`
 	// UID information about the requesting user. See user.Info interface for details.
 	Uid pulumi.StringPtrInput `pulumi:"uid"`
 	// allowedUsages specifies a set of usage contexts the key will be valid for. See: https://tools.ietf.org/html/rfc5280#section-4.2.1.3
 	//      https://tools.ietf.org/html/rfc5280#section-4.2.1.12
-	// Valid values are:
-	//  "signing",
-	//  "digital signature",
-	//  "content commitment",
-	//  "key encipherment",
-	//  "key agreement",
-	//  "data encipherment",
-	//  "cert sign",
-	//  "crl sign",
-	//  "encipher only",
-	//  "decipher only",
-	//  "any",
-	//  "server auth",
-	//  "client auth",
-	//  "code signing",
-	//  "email protection",
-	//  "s/mime",
-	//  "ipsec end system",
-	//  "ipsec tunnel",
-	//  "ipsec user",
-	//  "timestamping",
-	//  "ocsp signing",
-	//  "microsoft sgc",
-	//  "netscape sgc"
 	Usages pulumi.StringArrayInput `pulumi:"usages"`
 	// Information about the requesting user. See user.Info interface for details.
 	Username pulumi.StringPtrInput `pulumi:"username"`
@@ -561,17 +479,6 @@ func (o CertificateSigningRequestSpecOutput) Request() pulumi.StringOutput {
 	return o.ApplyT(func(v CertificateSigningRequestSpec) string { return v.Request }).(pulumi.StringOutput)
 }
 
-// Requested signer for the request. It is a qualified name in the form: `scope-hostname.io/name`. If empty, it will be defaulted:
-//  1. If it's a kubelet client certificate, it is assigned
-//     "kubernetes.io/kube-apiserver-client-kubelet".
-//  2. If it's a kubelet serving certificate, it is assigned
-//     "kubernetes.io/kubelet-serving".
-//  3. Otherwise, it is assigned "kubernetes.io/legacy-unknown".
-//     Distribution of trust for signers happens out of band. You can select on this field using `spec.signerName`.
-func (o CertificateSigningRequestSpecOutput) SignerName() pulumi.StringPtrOutput {
-	return o.ApplyT(func(v CertificateSigningRequestSpec) *string { return v.SignerName }).(pulumi.StringPtrOutput)
-}
-
 // UID information about the requesting user. See user.Info interface for details.
 func (o CertificateSigningRequestSpecOutput) Uid() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v CertificateSigningRequestSpec) *string { return v.Uid }).(pulumi.StringPtrOutput)
@@ -579,30 +486,6 @@ func (o CertificateSigningRequestSpecOutput) Uid() pulumi.StringPtrOutput {
 
 // allowedUsages specifies a set of usage contexts the key will be valid for. See: https://tools.ietf.org/html/rfc5280#section-4.2.1.3
 //      https://tools.ietf.org/html/rfc5280#section-4.2.1.12
-// Valid values are:
-//  "signing",
-//  "digital signature",
-//  "content commitment",
-//  "key encipherment",
-//  "key agreement",
-//  "data encipherment",
-//  "cert sign",
-//  "crl sign",
-//  "encipher only",
-//  "decipher only",
-//  "any",
-//  "server auth",
-//  "client auth",
-//  "code signing",
-//  "email protection",
-//  "s/mime",
-//  "ipsec end system",
-//  "ipsec tunnel",
-//  "ipsec user",
-//  "timestamping",
-//  "ocsp signing",
-//  "microsoft sgc",
-//  "netscape sgc"
 func (o CertificateSigningRequestSpecOutput) Usages() pulumi.StringArrayOutput {
 	return o.ApplyT(func(v CertificateSigningRequestSpec) []string { return v.Usages }).(pulumi.StringArrayOutput)
 }
@@ -660,22 +543,6 @@ func (o CertificateSigningRequestSpecPtrOutput) Request() pulumi.StringPtrOutput
 	}).(pulumi.StringPtrOutput)
 }
 
-// Requested signer for the request. It is a qualified name in the form: `scope-hostname.io/name`. If empty, it will be defaulted:
-//  1. If it's a kubelet client certificate, it is assigned
-//     "kubernetes.io/kube-apiserver-client-kubelet".
-//  2. If it's a kubelet serving certificate, it is assigned
-//     "kubernetes.io/kubelet-serving".
-//  3. Otherwise, it is assigned "kubernetes.io/legacy-unknown".
-//     Distribution of trust for signers happens out of band. You can select on this field using `spec.signerName`.
-func (o CertificateSigningRequestSpecPtrOutput) SignerName() pulumi.StringPtrOutput {
-	return o.ApplyT(func(v *CertificateSigningRequestSpec) *string {
-		if v == nil {
-			return nil
-		}
-		return v.SignerName
-	}).(pulumi.StringPtrOutput)
-}
-
 // UID information about the requesting user. See user.Info interface for details.
 func (o CertificateSigningRequestSpecPtrOutput) Uid() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *CertificateSigningRequestSpec) *string {
@@ -688,30 +555,6 @@ func (o CertificateSigningRequestSpecPtrOutput) Uid() pulumi.StringPtrOutput {
 
 // allowedUsages specifies a set of usage contexts the key will be valid for. See: https://tools.ietf.org/html/rfc5280#section-4.2.1.3
 //      https://tools.ietf.org/html/rfc5280#section-4.2.1.12
-// Valid values are:
-//  "signing",
-//  "digital signature",
-//  "content commitment",
-//  "key encipherment",
-//  "key agreement",
-//  "data encipherment",
-//  "cert sign",
-//  "crl sign",
-//  "encipher only",
-//  "decipher only",
-//  "any",
-//  "server auth",
-//  "client auth",
-//  "code signing",
-//  "email protection",
-//  "s/mime",
-//  "ipsec end system",
-//  "ipsec tunnel",
-//  "ipsec user",
-//  "timestamping",
-//  "ocsp signing",
-//  "microsoft sgc",
-//  "netscape sgc"
 func (o CertificateSigningRequestSpecPtrOutput) Usages() pulumi.StringArrayOutput {
 	return o.ApplyT(func(v *CertificateSigningRequestSpec) []string {
 		if v == nil {

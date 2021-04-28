@@ -321,7 +321,6 @@ _utilities.register(
    "kubernetes:core/v1:ConfigMapList": "ConfigMapList",
    "kubernetes:core/v1:Endpoints": "Endpoints",
    "kubernetes:core/v1:EndpointsList": "EndpointsList",
-   "kubernetes:core/v1:EphemeralContainers": "EphemeralContainers",
    "kubernetes:core/v1:Event": "Event",
    "kubernetes:core/v1:EventList": "EventList",
    "kubernetes:core/v1:LimitRange": "LimitRange",
@@ -454,8 +453,6 @@ _utilities.register(
   "fqn": "pulumi_kubernetes.networking.v1beta1",
   "classes": {
    "kubernetes:networking.k8s.io/v1beta1:Ingress": "Ingress",
-   "kubernetes:networking.k8s.io/v1beta1:IngressClass": "IngressClass",
-   "kubernetes:networking.k8s.io/v1beta1:IngressClassList": "IngressClassList",
    "kubernetes:networking.k8s.io/v1beta1:IngressList": "IngressList"
   }
  },

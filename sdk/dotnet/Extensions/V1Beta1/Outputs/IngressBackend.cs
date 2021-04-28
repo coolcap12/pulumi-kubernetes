@@ -14,10 +14,6 @@ namespace Pulumi.Kubernetes.Types.Outputs.Extensions.V1Beta1
     public sealed class IngressBackend
     {
         /// <summary>
-        /// Resource is an ObjectRef to another Kubernetes resource in the namespace of the Ingress object. If resource is specified, serviceName and servicePort must not be specified.
-        /// </summary>
-        public readonly Pulumi.Kubernetes.Types.Outputs.Core.V1.TypedLocalObjectReference Resource;
-        /// <summary>
         /// Specifies the name of the referenced service.
         /// </summary>
         public readonly string ServiceName;
@@ -28,13 +24,10 @@ namespace Pulumi.Kubernetes.Types.Outputs.Extensions.V1Beta1
 
         [OutputConstructor]
         private IngressBackend(
-            Pulumi.Kubernetes.Types.Outputs.Core.V1.TypedLocalObjectReference resource,
-
             string serviceName,
 
             Union<int, string> servicePort)
         {
-            Resource = resource;
             ServiceName = serviceName;
             ServicePort = servicePort;
         }

@@ -104,54 +104,34 @@ class CertificateSigningRequestArgs:
 class CertificateSigningRequestConditionArgs:
     def __init__(__self__, *,
                  type: pulumi.Input[str],
-                 last_transition_time: Optional[pulumi.Input[str]] = None,
                  last_update_time: Optional[pulumi.Input[str]] = None,
                  message: Optional[pulumi.Input[str]] = None,
-                 reason: Optional[pulumi.Input[str]] = None,
-                 status: Optional[pulumi.Input[str]] = None):
+                 reason: Optional[pulumi.Input[str]] = None):
         """
-        :param pulumi.Input[str] type: type of the condition. Known conditions include "Approved", "Denied", and "Failed".
-        :param pulumi.Input[str] last_transition_time: lastTransitionTime is the time the condition last transitioned from one status to another. If unset, when a new condition type is added or an existing condition's status is changed, the server defaults this to the current time.
+        :param pulumi.Input[str] type: request approval state, currently Approved or Denied.
         :param pulumi.Input[str] last_update_time: timestamp for the last update to this condition
         :param pulumi.Input[str] message: human readable message with details about the request state
         :param pulumi.Input[str] reason: brief reason for the request state
-        :param pulumi.Input[str] status: Status of the condition, one of True, False, Unknown. Approved, Denied, and Failed conditions may not be "False" or "Unknown". Defaults to "True". If unset, should be treated as "True".
         """
         pulumi.set(__self__, "type", type)
-        if last_transition_time is not None:
-            pulumi.set(__self__, "last_transition_time", last_transition_time)
         if last_update_time is not None:
             pulumi.set(__self__, "last_update_time", last_update_time)
         if message is not None:
             pulumi.set(__self__, "message", message)
         if reason is not None:
             pulumi.set(__self__, "reason", reason)
-        if status is not None:
-            pulumi.set(__self__, "status", status)
 
     @property
     @pulumi.getter
     def type(self) -> pulumi.Input[str]:
         """
-        type of the condition. Known conditions include "Approved", "Denied", and "Failed".
+        request approval state, currently Approved or Denied.
         """
         return pulumi.get(self, "type")
 
     @type.setter
     def type(self, value: pulumi.Input[str]):
         pulumi.set(self, "type", value)
-
-    @property
-    @pulumi.getter(name="lastTransitionTime")
-    def last_transition_time(self) -> Optional[pulumi.Input[str]]:
-        """
-        lastTransitionTime is the time the condition last transitioned from one status to another. If unset, when a new condition type is added or an existing condition's status is changed, the server defaults this to the current time.
-        """
-        return pulumi.get(self, "last_transition_time")
-
-    @last_transition_time.setter
-    def last_transition_time(self, value: Optional[pulumi.Input[str]]):
-        pulumi.set(self, "last_transition_time", value)
 
     @property
     @pulumi.getter(name="lastUpdateTime")
@@ -189,18 +169,6 @@ class CertificateSigningRequestConditionArgs:
     def reason(self, value: Optional[pulumi.Input[str]]):
         pulumi.set(self, "reason", value)
 
-    @property
-    @pulumi.getter
-    def status(self) -> Optional[pulumi.Input[str]]:
-        """
-        Status of the condition, one of True, False, Unknown. Approved, Denied, and Failed conditions may not be "False" or "Unknown". Defaults to "True". If unset, should be treated as "True".
-        """
-        return pulumi.get(self, "status")
-
-    @status.setter
-    def status(self, value: Optional[pulumi.Input[str]]):
-        pulumi.set(self, "status", value)
-
 
 @pulumi.input_type
 class CertificateSigningRequestSpecArgs:
@@ -208,7 +176,6 @@ class CertificateSigningRequestSpecArgs:
                  request: pulumi.Input[str],
                  extra: Optional[pulumi.Input[Mapping[str, pulumi.Input[Sequence[pulumi.Input[str]]]]]] = None,
                  groups: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
-                 signer_name: Optional[pulumi.Input[str]] = None,
                  uid: Optional[pulumi.Input[str]] = None,
                  usages: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
                  username: Optional[pulumi.Input[str]] = None):
@@ -217,40 +184,9 @@ class CertificateSigningRequestSpecArgs:
         :param pulumi.Input[str] request: Base64-encoded PKCS#10 CSR data
         :param pulumi.Input[Mapping[str, pulumi.Input[Sequence[pulumi.Input[str]]]]] extra: Extra information about the requesting user. See user.Info interface for details.
         :param pulumi.Input[Sequence[pulumi.Input[str]]] groups: Group information about the requesting user. See user.Info interface for details.
-        :param pulumi.Input[str] signer_name: Requested signer for the request. It is a qualified name in the form: `scope-hostname.io/name`. If empty, it will be defaulted:
-                1. If it's a kubelet client certificate, it is assigned
-                   "kubernetes.io/kube-apiserver-client-kubelet".
-                2. If it's a kubelet serving certificate, it is assigned
-                   "kubernetes.io/kubelet-serving".
-                3. Otherwise, it is assigned "kubernetes.io/legacy-unknown".
-               Distribution of trust for signers happens out of band. You can select on this field using `spec.signerName`.
         :param pulumi.Input[str] uid: UID information about the requesting user. See user.Info interface for details.
         :param pulumi.Input[Sequence[pulumi.Input[str]]] usages: allowedUsages specifies a set of usage contexts the key will be valid for. See: https://tools.ietf.org/html/rfc5280#section-4.2.1.3
                     https://tools.ietf.org/html/rfc5280#section-4.2.1.12
-               Valid values are:
-                "signing",
-                "digital signature",
-                "content commitment",
-                "key encipherment",
-                "key agreement",
-                "data encipherment",
-                "cert sign",
-                "crl sign",
-                "encipher only",
-                "decipher only",
-                "any",
-                "server auth",
-                "client auth",
-                "code signing",
-                "email protection",
-                "s/mime",
-                "ipsec end system",
-                "ipsec tunnel",
-                "ipsec user",
-                "timestamping",
-                "ocsp signing",
-                "microsoft sgc",
-                "netscape sgc"
         :param pulumi.Input[str] username: Information about the requesting user. See user.Info interface for details.
         """
         pulumi.set(__self__, "request", request)
@@ -258,8 +194,6 @@ class CertificateSigningRequestSpecArgs:
             pulumi.set(__self__, "extra", extra)
         if groups is not None:
             pulumi.set(__self__, "groups", groups)
-        if signer_name is not None:
-            pulumi.set(__self__, "signer_name", signer_name)
         if uid is not None:
             pulumi.set(__self__, "uid", uid)
         if usages is not None:
@@ -304,24 +238,6 @@ class CertificateSigningRequestSpecArgs:
         pulumi.set(self, "groups", value)
 
     @property
-    @pulumi.getter(name="signerName")
-    def signer_name(self) -> Optional[pulumi.Input[str]]:
-        """
-        Requested signer for the request. It is a qualified name in the form: `scope-hostname.io/name`. If empty, it will be defaulted:
-         1. If it's a kubelet client certificate, it is assigned
-            "kubernetes.io/kube-apiserver-client-kubelet".
-         2. If it's a kubelet serving certificate, it is assigned
-            "kubernetes.io/kubelet-serving".
-         3. Otherwise, it is assigned "kubernetes.io/legacy-unknown".
-        Distribution of trust for signers happens out of band. You can select on this field using `spec.signerName`.
-        """
-        return pulumi.get(self, "signer_name")
-
-    @signer_name.setter
-    def signer_name(self, value: Optional[pulumi.Input[str]]):
-        pulumi.set(self, "signer_name", value)
-
-    @property
     @pulumi.getter
     def uid(self) -> Optional[pulumi.Input[str]]:
         """
@@ -339,30 +255,6 @@ class CertificateSigningRequestSpecArgs:
         """
         allowedUsages specifies a set of usage contexts the key will be valid for. See: https://tools.ietf.org/html/rfc5280#section-4.2.1.3
              https://tools.ietf.org/html/rfc5280#section-4.2.1.12
-        Valid values are:
-         "signing",
-         "digital signature",
-         "content commitment",
-         "key encipherment",
-         "key agreement",
-         "data encipherment",
-         "cert sign",
-         "crl sign",
-         "encipher only",
-         "decipher only",
-         "any",
-         "server auth",
-         "client auth",
-         "code signing",
-         "email protection",
-         "s/mime",
-         "ipsec end system",
-         "ipsec tunnel",
-         "ipsec user",
-         "timestamping",
-         "ocsp signing",
-         "microsoft sgc",
-         "netscape sgc"
         """
         return pulumi.get(self, "usages")
 

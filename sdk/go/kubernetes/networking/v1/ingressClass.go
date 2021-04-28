@@ -34,12 +34,6 @@ func NewIngressClass(ctx *pulumi.Context,
 
 	args.ApiVersion = pulumi.StringPtr("networking.k8s.io/v1")
 	args.Kind = pulumi.StringPtr("IngressClass")
-	aliases := pulumi.Aliases([]pulumi.Alias{
-		{
-			Type: pulumi.String("kubernetes:networking.k8s.io/v1beta1:IngressClass"),
-		},
-	})
-	opts = append(opts, aliases)
 	var resource IngressClass
 	err := ctx.RegisterResource("kubernetes:networking.k8s.io/v1:IngressClass", name, args, &resource, opts...)
 	if err != nil {

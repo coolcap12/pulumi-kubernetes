@@ -16,12 +16,6 @@ namespace Pulumi.Kubernetes.Types.Inputs.Extensions.V1Beta1
     public class IngressBackendArgs : Pulumi.ResourceArgs
     {
         /// <summary>
-        /// Resource is an ObjectRef to another Kubernetes resource in the namespace of the Ingress object. If resource is specified, serviceName and servicePort must not be specified.
-        /// </summary>
-        [Input("resource")]
-        public Input<Pulumi.Kubernetes.Types.Inputs.Core.V1.TypedLocalObjectReferenceArgs>? Resource { get; set; }
-
-        /// <summary>
         /// Specifies the name of the referenced service.
         /// </summary>
         [Input("serviceName", required: true)]
