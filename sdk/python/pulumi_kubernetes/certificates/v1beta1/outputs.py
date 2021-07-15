@@ -106,7 +106,9 @@ class CertificateSigningRequestCondition(dict):
     @staticmethod
     def __key_warning(key: str):
         suggest = None
-        if key == "lastUpdateTime":
+        if key == "lastTransitionTime":
+            suggest = "last_transition_time"
+        elif key == "lastUpdateTime":
             suggest = "last_update_time"
 
         if suggest:
@@ -122,22 +124,30 @@ class CertificateSigningRequestCondition(dict):
 
     def __init__(__self__, *,
                  type: str,
+                 last_transition_time: Optional[str] = None,
                  last_update_time: Optional[str] = None,
                  message: Optional[str] = None,
-                 reason: Optional[str] = None):
+                 reason: Optional[str] = None,
+                 status: Optional[str] = None):
         """
         :param str type: request approval state, currently Approved or Denied.
+        :param str last_transition_time: lastTransitionTime is the time the condition last transitioned from one status to another. If unset, when a new condition type is added or an existing condition's status is changed, the server defaults this to the current time.
         :param str last_update_time: timestamp for the last update to this condition
         :param str message: human readable message with details about the request state
         :param str reason: brief reason for the request state
+        :param str status: Status of the condition, one of True, False, Unknown. Approved, Denied, and Failed conditions may not be "False" or "Unknown". Defaults to "True". If unset, should be treated as "True".
         """
         pulumi.set(__self__, "type", type)
+        if last_transition_time is not None:
+            pulumi.set(__self__, "last_transition_time", last_transition_time)
         if last_update_time is not None:
             pulumi.set(__self__, "last_update_time", last_update_time)
         if message is not None:
             pulumi.set(__self__, "message", message)
         if reason is not None:
             pulumi.set(__self__, "reason", reason)
+        if status is not None:
+            pulumi.set(__self__, "status", status)
 
     @property
     @pulumi.getter
@@ -146,6 +156,14 @@ class CertificateSigningRequestCondition(dict):
         request approval state, currently Approved or Denied.
         """
         return pulumi.get(self, "type")
+
+    @property
+    @pulumi.getter(name="lastTransitionTime")
+    def last_transition_time(self) -> Optional[str]:
+        """
+        lastTransitionTime is the time the condition last transitioned from one status to another. If unset, when a new condition type is added or an existing condition's status is changed, the server defaults this to the current time.
+        """
+        return pulumi.get(self, "last_transition_time")
 
     @property
     @pulumi.getter(name="lastUpdateTime")
@@ -170,6 +188,14 @@ class CertificateSigningRequestCondition(dict):
         brief reason for the request state
         """
         return pulumi.get(self, "reason")
+
+    @property
+    @pulumi.getter
+    def status(self) -> Optional[str]:
+        """
+        Status of the condition, one of True, False, Unknown. Approved, Denied, and Failed conditions may not be "False" or "Unknown". Defaults to "True". If unset, should be treated as "True".
+        """
+        return pulumi.get(self, "status")
 
 
 @pulumi.output_type

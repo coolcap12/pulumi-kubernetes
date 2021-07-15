@@ -3560,9 +3560,11 @@ class EphemeralContainerArgs:
 @pulumi.input_type
 class EphemeralVolumeSourceArgs:
     def __init__(__self__, *,
+                 read_only: Optional[pulumi.Input[bool]] = None,
                  volume_claim_template: Optional[pulumi.Input['PersistentVolumeClaimTemplateArgs']] = None):
         """
         Represents an ephemeral volume that is handled by a normal storage driver.
+        :param pulumi.Input[bool] read_only: Specifies a read-only configuration for the volume. Defaults to false (read/write).
         :param pulumi.Input['PersistentVolumeClaimTemplateArgs'] volume_claim_template: Will be used to create a stand-alone PVC to provision the volume. The pod in which this EphemeralVolumeSource is embedded will be the owner of the PVC, i.e. the PVC will be deleted together with the pod.  The name of the PVC will be `<pod name>-<volume name>` where `<volume name>` is the name from the `PodSpec.Volumes` array entry. Pod validation will reject the pod if the concatenated name is not valid for a PVC (for example, too long).
                
                An existing PVC with that name that is not owned by the pod will *not* be used for the pod to avoid using an unrelated volume by mistake. Starting the pod is then blocked until the unrelated PVC is removed. If such a pre-created PVC is meant to be used by the pod, the PVC has to updated with an owner reference to the pod once the pod exists. Normally this should not be necessary, but it may be useful when manually reconstructing a broken cluster.
@@ -3571,8 +3573,22 @@ class EphemeralVolumeSourceArgs:
                
                Required, must not be nil.
         """
+        if read_only is not None:
+            pulumi.set(__self__, "read_only", read_only)
         if volume_claim_template is not None:
             pulumi.set(__self__, "volume_claim_template", volume_claim_template)
+
+    @property
+    @pulumi.getter(name="readOnly")
+    def read_only(self) -> Optional[pulumi.Input[bool]]:
+        """
+        Specifies a read-only configuration for the volume. Defaults to false (read/write).
+        """
+        return pulumi.get(self, "read_only")
+
+    @read_only.setter
+    def read_only(self, value: Optional[pulumi.Input[bool]]):
+        pulumi.set(self, "read_only", value)
 
     @property
     @pulumi.getter(name="volumeClaimTemplate")

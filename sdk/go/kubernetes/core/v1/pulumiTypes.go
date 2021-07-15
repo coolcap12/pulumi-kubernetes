@@ -7741,6 +7741,8 @@ func (o EphemeralContainerArrayOutput) Index(i pulumi.IntInput) EphemeralContain
 
 // Represents an ephemeral volume that is handled by a normal storage driver.
 type EphemeralVolumeSource struct {
+	// Specifies a read-only configuration for the volume. Defaults to false (read/write).
+	ReadOnly *bool `pulumi:"readOnly"`
 	// Will be used to create a stand-alone PVC to provision the volume. The pod in which this EphemeralVolumeSource is embedded will be the owner of the PVC, i.e. the PVC will be deleted together with the pod.  The name of the PVC will be `<pod name>-<volume name>` where `<volume name>` is the name from the `PodSpec.Volumes` array entry. Pod validation will reject the pod if the concatenated name is not valid for a PVC (for example, too long).
 	//
 	// An existing PVC with that name that is not owned by the pod will *not* be used for the pod to avoid using an unrelated volume by mistake. Starting the pod is then blocked until the unrelated PVC is removed. If such a pre-created PVC is meant to be used by the pod, the PVC has to updated with an owner reference to the pod once the pod exists. Normally this should not be necessary, but it may be useful when manually reconstructing a broken cluster.
@@ -7764,6 +7766,8 @@ type EphemeralVolumeSourceInput interface {
 
 // Represents an ephemeral volume that is handled by a normal storage driver.
 type EphemeralVolumeSourceArgs struct {
+	// Specifies a read-only configuration for the volume. Defaults to false (read/write).
+	ReadOnly pulumi.BoolPtrInput `pulumi:"readOnly"`
 	// Will be used to create a stand-alone PVC to provision the volume. The pod in which this EphemeralVolumeSource is embedded will be the owner of the PVC, i.e. the PVC will be deleted together with the pod.  The name of the PVC will be `<pod name>-<volume name>` where `<volume name>` is the name from the `PodSpec.Volumes` array entry. Pod validation will reject the pod if the concatenated name is not valid for a PVC (for example, too long).
 	//
 	// An existing PVC with that name that is not owned by the pod will *not* be used for the pod to avoid using an unrelated volume by mistake. Starting the pod is then blocked until the unrelated PVC is removed. If such a pre-created PVC is meant to be used by the pod, the PVC has to updated with an owner reference to the pod once the pod exists. Normally this should not be necessary, but it may be useful when manually reconstructing a broken cluster.
@@ -7852,6 +7856,11 @@ func (o EphemeralVolumeSourceOutput) ToEphemeralVolumeSourcePtrOutputWithContext
 	}).(EphemeralVolumeSourcePtrOutput)
 }
 
+// Specifies a read-only configuration for the volume. Defaults to false (read/write).
+func (o EphemeralVolumeSourceOutput) ReadOnly() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v EphemeralVolumeSource) *bool { return v.ReadOnly }).(pulumi.BoolPtrOutput)
+}
+
 // Will be used to create a stand-alone PVC to provision the volume. The pod in which this EphemeralVolumeSource is embedded will be the owner of the PVC, i.e. the PVC will be deleted together with the pod.  The name of the PVC will be `<pod name>-<volume name>` where `<volume name>` is the name from the `PodSpec.Volumes` array entry. Pod validation will reject the pod if the concatenated name is not valid for a PVC (for example, too long).
 //
 // An existing PVC with that name that is not owned by the pod will *not* be used for the pod to avoid using an unrelated volume by mistake. Starting the pod is then blocked until the unrelated PVC is removed. If such a pre-created PVC is meant to be used by the pod, the PVC has to updated with an owner reference to the pod once the pod exists. Normally this should not be necessary, but it may be useful when manually reconstructing a broken cluster.
@@ -7879,6 +7888,16 @@ func (o EphemeralVolumeSourcePtrOutput) ToEphemeralVolumeSourcePtrOutputWithCont
 
 func (o EphemeralVolumeSourcePtrOutput) Elem() EphemeralVolumeSourceOutput {
 	return o.ApplyT(func(v *EphemeralVolumeSource) EphemeralVolumeSource { return *v }).(EphemeralVolumeSourceOutput)
+}
+
+// Specifies a read-only configuration for the volume. Defaults to false (read/write).
+func (o EphemeralVolumeSourcePtrOutput) ReadOnly() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v *EphemeralVolumeSource) *bool {
+		if v == nil {
+			return nil
+		}
+		return v.ReadOnly
+	}).(pulumi.BoolPtrOutput)
 }
 
 // Will be used to create a stand-alone PVC to provision the volume. The pod in which this EphemeralVolumeSource is embedded will be the owner of the PVC, i.e. the PVC will be deleted together with the pod.  The name of the PVC will be `<pod name>-<volume name>` where `<volume name>` is the name from the `PodSpec.Volumes` array entry. Pod validation will reject the pod if the concatenated name is not valid for a PVC (for example, too long).

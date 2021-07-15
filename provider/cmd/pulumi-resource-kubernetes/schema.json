@@ -2095,6 +2095,14 @@
                     },
                     "description": "additionalPrinterColumns specifies additional columns returned in Table output. See https://kubernetes.io/docs/reference/using-api/api-concepts/#receiving-resources-as-tables for details. Top-level and per-version columns are mutually exclusive. Per-version columns must not all be set to identical values (top-level columns should be used instead). If no top-level or per-version columns are specified, a single column displaying the age of the custom resource is used."
                 },
+                "deprecated": {
+                    "type": "boolean",
+                    "description": "deprecated indicates this version of the custom resource API is deprecated. When set to true, API requests to this version receive a warning header in the server response. Defaults to false."
+                },
+                "deprecationWarning": {
+                    "type": "string",
+                    "description": "deprecationWarning overrides the default warning returned to API clients. May only be set when `deprecated` is true. The default warning indicates this version is deprecated and recommends use of the newest served version of equal or greater stability, if one exists."
+                },
                 "name": {
                     "type": "string",
                     "description": "name is the version name, e.g. “v1”, “v2beta1”, etc. The custom resources are served under this version at `/apis/\u003cgroup\u003e/\u003cversion\u003e/...` if `served` is true."
@@ -2126,6 +2134,8 @@
                 "nodejs": {
                     "requiredOutputs": [
                         "additionalPrinterColumns",
+                        "deprecated",
+                        "deprecationWarning",
                         "name",
                         "schema",
                         "served",
@@ -10637,6 +10647,10 @@
         },
         "kubernetes:certificates.k8s.io/v1beta1:CertificateSigningRequestCondition": {
             "properties": {
+                "lastTransitionTime": {
+                    "type": "string",
+                    "description": "lastTransitionTime is the time the condition last transitioned from one status to another. If unset, when a new condition type is added or an existing condition's status is changed, the server defaults this to the current time."
+                },
                 "lastUpdateTime": {
                     "type": "string",
                     "description": "timestamp for the last update to this condition"
@@ -10648,6 +10662,10 @@
                 "reason": {
                     "type": "string",
                     "description": "brief reason for the request state"
+                },
+                "status": {
+                    "type": "string",
+                    "description": "Status of the condition, one of True, False, Unknown. Approved, Denied, and Failed conditions may not be \"False\" or \"Unknown\". Defaults to \"True\". If unset, should be treated as \"True\"."
                 },
                 "type": {
                     "type": "string",
@@ -10661,9 +10679,11 @@
             "language": {
                 "nodejs": {
                     "requiredOutputs": [
+                        "lastTransitionTime",
                         "lastUpdateTime",
                         "message",
                         "reason",
+                        "status",
                         "type"
                     ]
                 }
@@ -12875,6 +12895,10 @@
         "kubernetes:core/v1:EphemeralVolumeSource": {
             "description": "Represents an ephemeral volume that is handled by a normal storage driver.",
             "properties": {
+                "readOnly": {
+                    "type": "boolean",
+                    "description": "Specifies a read-only configuration for the volume. Defaults to false (read/write)."
+                },
                 "volumeClaimTemplate": {
                     "$ref": "#/types/kubernetes:core/v1:PersistentVolumeClaimTemplate",
                     "description": "Will be used to create a stand-alone PVC to provision the volume. The pod in which this EphemeralVolumeSource is embedded will be the owner of the PVC, i.e. the PVC will be deleted together with the pod.  The name of the PVC will be `\u003cpod name\u003e-\u003cvolume name\u003e` where `\u003cvolume name\u003e` is the name from the `PodSpec.Volumes` array entry. Pod validation will reject the pod if the concatenated name is not valid for a PVC (for example, too long).\n\nAn existing PVC with that name that is not owned by the pod will *not* be used for the pod to avoid using an unrelated volume by mistake. Starting the pod is then blocked until the unrelated PVC is removed. If such a pre-created PVC is meant to be used by the pod, the PVC has to updated with an owner reference to the pod once the pod exists. Normally this should not be necessary, but it may be useful when manually reconstructing a broken cluster.\n\nThis field is read-only and no changes will be made by Kubernetes to the PVC after it has been created.\n\nRequired, must not be nil."
@@ -12884,6 +12908,7 @@
             "language": {
                 "nodejs": {
                     "requiredOutputs": [
+                        "readOnly",
                         "volumeClaimTemplate"
                     ]
                 }
@@ -28937,9 +28962,17 @@
                     "type": "boolean",
                     "description": "attachRequired indicates this CSI volume driver requires an attach operation (because it implements the CSI ControllerPublishVolume() method), and that the Kubernetes attach detach controller should call the attach volume interface which checks the volumeattachment status and waits until the volume is attached before proceeding to mounting. The CSI external-attacher coordinates with CSI volume driver and updates the volumeattachment status when the attach operation is complete. If the CSIDriverRegistry feature gate is enabled and the value is specified to false, the attach operation will be skipped. Otherwise the attach operation will be called."
                 },
+                "fsGroupPolicy": {
+                    "type": "string",
+                    "description": "Defines if the underlying volume supports changing ownership and permission of the volume before being mounted. Refer to the specific FSGroupPolicy values for additional details. This field is alpha-level, and is only honored by servers that enable the CSIVolumeFSGroupPolicy feature gate."
+                },
                 "podInfoOnMount": {
                     "type": "boolean",
                     "description": "If set to true, podInfoOnMount indicates this CSI volume driver requires additional pod information (like podName, podUID, etc.) during mount operations. If set to false, pod information will not be passed on mount. Default is false. The CSI driver specifies podInfoOnMount as part of driver deployment. If true, Kubelet will pass pod information as VolumeContext in the CSI NodePublishVolume() calls. The CSI driver is responsible for parsing and validating the information passed in as VolumeContext. The following VolumeConext will be passed if podInfoOnMount is set to true. This list might grow, but the prefix will be used. \"csi.storage.k8s.io/pod.name\": pod.Name \"csi.storage.k8s.io/pod.namespace\": pod.Namespace \"csi.storage.k8s.io/pod.uid\": string(pod.UID) \"csi.storage.k8s.io/ephemeral\": \"true\" iff the volume is an ephemeral inline volume\n                                defined by a CSIVolumeSource, otherwise \"false\"\n\n\"csi.storage.k8s.io/ephemeral\" is a new feature in Kubernetes 1.16. It is only required for drivers which support both the \"Persistent\" and \"Ephemeral\" VolumeLifecycleMode. Other drivers can leave pod info disabled and/or ignore this field. As Kubernetes 1.15 doesn't support this field, drivers can only support one mode when deployed on such a cluster and the deployment determines which mode that is, for example via a command line parameter of the driver."
+                },
+                "storageCapacity": {
+                    "type": "boolean",
+                    "description": "If set to true, storageCapacity indicates that the CSI volume driver wants pod scheduling to consider the storage capacity that the driver deployment will report by creating CSIStorageCapacity objects with capacity information.\n\nThe check can be enabled immediately when deploying a driver. In that case, provisioning new volumes with late binding will pause until the driver deployment has published some suitable CSIStorageCapacity object.\n\nAlternatively, the driver can be deployed with the field unset or false and it can be flipped later when storage capacity information has been published.\n\nThis is an alpha field and only available when the CSIStorageCapacity feature is enabled. The default is false."
                 },
                 "volumeLifecycleModes": {
                     "type": "array",
@@ -28954,7 +28987,9 @@
                 "nodejs": {
                     "requiredOutputs": [
                         "attachRequired",
+                        "fsGroupPolicy",
                         "podInfoOnMount",
+                        "storageCapacity",
                         "volumeLifecycleModes"
                     ]
                 }

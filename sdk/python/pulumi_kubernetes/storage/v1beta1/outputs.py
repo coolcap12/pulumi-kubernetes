@@ -112,8 +112,12 @@ class CSIDriverSpec(dict):
         suggest = None
         if key == "attachRequired":
             suggest = "attach_required"
+        elif key == "fsGroupPolicy":
+            suggest = "fs_group_policy"
         elif key == "podInfoOnMount":
             suggest = "pod_info_on_mount"
+        elif key == "storageCapacity":
+            suggest = "storage_capacity"
         elif key == "volumeLifecycleModes":
             suggest = "volume_lifecycle_modes"
 
@@ -130,21 +134,35 @@ class CSIDriverSpec(dict):
 
     def __init__(__self__, *,
                  attach_required: Optional[bool] = None,
+                 fs_group_policy: Optional[str] = None,
                  pod_info_on_mount: Optional[bool] = None,
+                 storage_capacity: Optional[bool] = None,
                  volume_lifecycle_modes: Optional[Sequence[str]] = None):
         """
         CSIDriverSpec is the specification of a CSIDriver.
         :param bool attach_required: attachRequired indicates this CSI volume driver requires an attach operation (because it implements the CSI ControllerPublishVolume() method), and that the Kubernetes attach detach controller should call the attach volume interface which checks the volumeattachment status and waits until the volume is attached before proceeding to mounting. The CSI external-attacher coordinates with CSI volume driver and updates the volumeattachment status when the attach operation is complete. If the CSIDriverRegistry feature gate is enabled and the value is specified to false, the attach operation will be skipped. Otherwise the attach operation will be called.
+        :param str fs_group_policy: Defines if the underlying volume supports changing ownership and permission of the volume before being mounted. Refer to the specific FSGroupPolicy values for additional details. This field is alpha-level, and is only honored by servers that enable the CSIVolumeFSGroupPolicy feature gate.
         :param bool pod_info_on_mount: If set to true, podInfoOnMount indicates this CSI volume driver requires additional pod information (like podName, podUID, etc.) during mount operations. If set to false, pod information will not be passed on mount. Default is false. The CSI driver specifies podInfoOnMount as part of driver deployment. If true, Kubelet will pass pod information as VolumeContext in the CSI NodePublishVolume() calls. The CSI driver is responsible for parsing and validating the information passed in as VolumeContext. The following VolumeConext will be passed if podInfoOnMount is set to true. This list might grow, but the prefix will be used. "csi.storage.k8s.io/pod.name": pod.Name "csi.storage.k8s.io/pod.namespace": pod.Namespace "csi.storage.k8s.io/pod.uid": string(pod.UID) "csi.storage.k8s.io/ephemeral": "true" iff the volume is an ephemeral inline volume
                                                defined by a CSIVolumeSource, otherwise "false"
                
                "csi.storage.k8s.io/ephemeral" is a new feature in Kubernetes 1.16. It is only required for drivers which support both the "Persistent" and "Ephemeral" VolumeLifecycleMode. Other drivers can leave pod info disabled and/or ignore this field. As Kubernetes 1.15 doesn't support this field, drivers can only support one mode when deployed on such a cluster and the deployment determines which mode that is, for example via a command line parameter of the driver.
+        :param bool storage_capacity: If set to true, storageCapacity indicates that the CSI volume driver wants pod scheduling to consider the storage capacity that the driver deployment will report by creating CSIStorageCapacity objects with capacity information.
+               
+               The check can be enabled immediately when deploying a driver. In that case, provisioning new volumes with late binding will pause until the driver deployment has published some suitable CSIStorageCapacity object.
+               
+               Alternatively, the driver can be deployed with the field unset or false and it can be flipped later when storage capacity information has been published.
+               
+               This is an alpha field and only available when the CSIStorageCapacity feature is enabled. The default is false.
         :param Sequence[str] volume_lifecycle_modes: VolumeLifecycleModes defines what kind of volumes this CSI volume driver supports. The default if the list is empty is "Persistent", which is the usage defined by the CSI specification and implemented in Kubernetes via the usual PV/PVC mechanism. The other mode is "Ephemeral". In this mode, volumes are defined inline inside the pod spec with CSIVolumeSource and their lifecycle is tied to the lifecycle of that pod. A driver has to be aware of this because it is only going to get a NodePublishVolume call for such a volume. For more information about implementing this mode, see https://kubernetes-csi.github.io/docs/ephemeral-local-volumes.html A driver can support one or more of these modes and more modes may be added in the future.
         """
         if attach_required is not None:
             pulumi.set(__self__, "attach_required", attach_required)
+        if fs_group_policy is not None:
+            pulumi.set(__self__, "fs_group_policy", fs_group_policy)
         if pod_info_on_mount is not None:
             pulumi.set(__self__, "pod_info_on_mount", pod_info_on_mount)
+        if storage_capacity is not None:
+            pulumi.set(__self__, "storage_capacity", storage_capacity)
         if volume_lifecycle_modes is not None:
             pulumi.set(__self__, "volume_lifecycle_modes", volume_lifecycle_modes)
 
@@ -157,6 +175,14 @@ class CSIDriverSpec(dict):
         return pulumi.get(self, "attach_required")
 
     @property
+    @pulumi.getter(name="fsGroupPolicy")
+    def fs_group_policy(self) -> Optional[str]:
+        """
+        Defines if the underlying volume supports changing ownership and permission of the volume before being mounted. Refer to the specific FSGroupPolicy values for additional details. This field is alpha-level, and is only honored by servers that enable the CSIVolumeFSGroupPolicy feature gate.
+        """
+        return pulumi.get(self, "fs_group_policy")
+
+    @property
     @pulumi.getter(name="podInfoOnMount")
     def pod_info_on_mount(self) -> Optional[bool]:
         """
@@ -166,6 +192,20 @@ class CSIDriverSpec(dict):
         "csi.storage.k8s.io/ephemeral" is a new feature in Kubernetes 1.16. It is only required for drivers which support both the "Persistent" and "Ephemeral" VolumeLifecycleMode. Other drivers can leave pod info disabled and/or ignore this field. As Kubernetes 1.15 doesn't support this field, drivers can only support one mode when deployed on such a cluster and the deployment determines which mode that is, for example via a command line parameter of the driver.
         """
         return pulumi.get(self, "pod_info_on_mount")
+
+    @property
+    @pulumi.getter(name="storageCapacity")
+    def storage_capacity(self) -> Optional[bool]:
+        """
+        If set to true, storageCapacity indicates that the CSI volume driver wants pod scheduling to consider the storage capacity that the driver deployment will report by creating CSIStorageCapacity objects with capacity information.
+
+        The check can be enabled immediately when deploying a driver. In that case, provisioning new volumes with late binding will pause until the driver deployment has published some suitable CSIStorageCapacity object.
+
+        Alternatively, the driver can be deployed with the field unset or false and it can be flipped later when storage capacity information has been published.
+
+        This is an alpha field and only available when the CSIStorageCapacity feature is enabled. The default is false.
+        """
+        return pulumi.get(self, "storage_capacity")
 
     @property
     @pulumi.getter(name="volumeLifecycleModes")
