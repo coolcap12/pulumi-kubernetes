@@ -1105,7 +1105,7 @@ export namespace apiextensions {
         }
 
         /**
-         * CustomResourceDefinition represents a resource that should be exposed on the API server.  Its name MUST be in the format <.spec.name>.<.spec.group>. Deprecated in v1.16, planned for removal in v1.22. Use apiextensions.k8s.io/v1 CustomResourceDefinition instead.
+         * CustomResourceDefinition represents a resource that should be exposed on the API server.  Its name MUST be in the format <.spec.name>.<.spec.group>. Deprecated in v1.16, planned for removal in v1.19. Use apiextensions.k8s.io/v1 CustomResourceDefinition instead.
          */
         export interface CustomResourceDefinition {
             /**
@@ -1116,9 +1116,6 @@ export namespace apiextensions {
              * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
              */
             kind?: pulumi.Input<"CustomResourceDefinition">;
-            /**
-             * Standard object's metadata More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata
-             */
             metadata?: pulumi.Input<inputs.meta.v1.ObjectMeta>;
             /**
              * spec describes how the user wants the resources to appear
@@ -1258,14 +1255,6 @@ export namespace apiextensions {
              * additionalPrinterColumns specifies additional columns returned in Table output. See https://kubernetes.io/docs/reference/using-api/api-concepts/#receiving-resources-as-tables for details. Top-level and per-version columns are mutually exclusive. Per-version columns must not all be set to identical values (top-level columns should be used instead). If no top-level or per-version columns are specified, a single column displaying the age of the custom resource is used.
              */
             additionalPrinterColumns?: pulumi.Input<pulumi.Input<inputs.apiextensions.v1beta1.CustomResourceColumnDefinition>[]>;
-            /**
-             * deprecated indicates this version of the custom resource API is deprecated. When set to true, API requests to this version receive a warning header in the server response. Defaults to false.
-             */
-            deprecated?: pulumi.Input<boolean>;
-            /**
-             * deprecationWarning overrides the default warning returned to API clients. May only be set when `deprecated` is true. The default warning indicates this version is deprecated and recommends use of the newest served version of equal or greater stability, if one exists.
-             */
-            deprecationWarning?: pulumi.Input<string>;
             /**
              * name is the version name, e.g. “v1”, “v2beta1”, etc. The custom resources are served under this version at `/apis/<group>/<version>/...` if `served` is true.
              */
@@ -1408,8 +1397,6 @@ export namespace apiextensions {
              * x-kubernetes-list-map-keys annotates an array with the x-kubernetes-list-type `map` by specifying the keys used as the index of the map.
              *
              * This tag MUST only be used on lists that have the "x-kubernetes-list-type" extension set to "map". Also, the values specified for this attribute must be a scalar typed field of the child structure (no nesting is supported).
-             *
-             * The properties specified must either be required or have a default value, to ensure those properties are present for all list items.
              */
             x_kubernetes_list_map_keys?: pulumi.Input<pulumi.Input<string>[]>;
             /**
@@ -2174,11 +2161,11 @@ export namespace apps {
          */
         export interface RollingUpdateDaemonSet {
             /**
-             * The maximum number of nodes with an existing available DaemonSet pod that can have an updated DaemonSet pod during during an update. Value can be an absolute number (ex: 5) or a percentage of desired pods (ex: 10%). This can not be 0 if MaxUnavailable is 0. Absolute number is calculated from percentage by rounding up to a minimum of 1. Default value is 0. Example: when this is set to 30%, at most 30% of the total number of nodes that should be running the daemon pod (i.e. status.desiredNumberScheduled) can have their a new pod created before the old pod is marked as deleted. The update starts by launching new pods on 30% of nodes. Once an updated pod is available (Ready for at least minReadySeconds) the old DaemonSet pod on that node is marked deleted. If the old pod becomes unavailable for any reason (Ready transitions to false, is evicted, or is drained) an updated pod is immediatedly created on that node without considering surge limits. Allowing surge implies the possibility that the resources consumed by the daemonset on any given node can double if the readiness check fails, and so resource intensive daemonsets should take into account that they may cause evictions during disruption. This is an alpha field and requires enabling DaemonSetUpdateSurge feature gate.
+             * The maximum number of nodes with an existing available DaemonSet pod that can have an updated DaemonSet pod during during an update. Value can be an absolute number (ex: 5) or a percentage of desired pods (ex: 10%). This can not be 0 if MaxUnavailable is 0. Absolute number is calculated from percentage by rounding up to a minimum of 1. Default value is 0. Example: when this is set to 30%, at most 30% of the total number of nodes that should be running the daemon pod (i.e. status.desiredNumberScheduled) can have their a new pod created before the old pod is marked as deleted. The update starts by launching new pods on 30% of nodes. Once an updated pod is available (Ready for at least minReadySeconds) the old DaemonSet pod on that node is marked deleted. If the old pod becomes unavailable for any reason (Ready transitions to false, is evicted, or is drained) an updated pod is immediatedly created on that node without considering surge limits. Allowing surge implies the possibility that the resources consumed by the daemonset on any given node can double if the readiness check fails, and so resource intensive daemonsets should take into account that they may cause evictions during disruption. This is beta field and enabled/disabled by DaemonSetUpdateSurge feature gate.
              */
             maxSurge?: pulumi.Input<number | string>;
             /**
-             * The maximum number of DaemonSet pods that can be unavailable during the update. Value can be an absolute number (ex: 5) or a percentage of total number of DaemonSet pods at the start of the update (ex: 10%). Absolute number is calculated from percentage by rounding down to a minimum of one. This cannot be 0 if MaxSurge is 0 Default value is 1. Example: when this is set to 30%, at most 30% of the total number of nodes that should be running the daemon pod (i.e. status.desiredNumberScheduled) can have their pods stopped for an update at any given time. The update starts by stopping at most 30% of those DaemonSet pods and then brings up new DaemonSet pods in their place. Once the new pods are available, it then proceeds onto other DaemonSet pods, thus ensuring that at least 70% of original number of DaemonSet pods are available at all times during the update.
+             * The maximum number of DaemonSet pods that can be unavailable during the update. Value can be an absolute number (ex: 5) or a percentage of total number of DaemonSet pods at the start of the update (ex: 10%). Absolute number is calculated from percentage by rounding up. This cannot be 0 if MaxSurge is 0 Default value is 1. Example: when this is set to 30%, at most 30% of the total number of nodes that should be running the daemon pod (i.e. status.desiredNumberScheduled) can have their pods stopped for an update at any given time. The update starts by stopping at most 30% of those DaemonSet pods and then brings up new DaemonSet pods in their place. Once the new pods are available, it then proceeds onto other DaemonSet pods, thus ensuring that at least 70% of original number of DaemonSet pods are available at all times during the update.
              */
             maxUnavailable?: pulumi.Input<number | string>;
         }
@@ -2276,9 +2263,31 @@ export namespace apps {
         }
 
         /**
+         * StatefulSetPersistentVolumeClaimRetentionPolicy describes the policy used for PVCs created from the StatefulSet VolumeClaimTemplates.
+         */
+        export interface StatefulSetPersistentVolumeClaimRetentionPolicy {
+            /**
+             * WhenDeleted specifies what happens to PVCs created from StatefulSet VolumeClaimTemplates when the StatefulSet is deleted. The default policy of `Retain` causes PVCs to not be affected by StatefulSet deletion. The `Delete` policy causes those PVCs to be deleted.
+             */
+            whenDeleted?: pulumi.Input<string>;
+            /**
+             * WhenScaled specifies what happens to PVCs created from StatefulSet VolumeClaimTemplates when the StatefulSet is scaled down. The default policy of `Retain` causes PVCs to not be affected by a scaledown. The `Delete` policy causes the associated PVCs for any excess pods above the replica count to be deleted.
+             */
+            whenScaled?: pulumi.Input<string>;
+        }
+
+        /**
          * A StatefulSetSpec is the specification of a StatefulSet.
          */
         export interface StatefulSetSpec {
+            /**
+             * Minimum number of seconds for which a newly created pod should be ready without any of its container crashing for it to be considered available. Defaults to 0 (pod will be considered available as soon as it is ready) This is an alpha field and requires enabling StatefulSetMinReadySeconds feature gate.
+             */
+            minReadySeconds?: pulumi.Input<number>;
+            /**
+             * persistentVolumeClaimRetentionPolicy describes the lifecycle of persistent volume claims created from volumeClaimTemplates. By default, all persistent volume claims are created as needed and retained until manually deleted. This policy allows the lifecycle to be altered, for example by deleting persistent volume claims when their stateful set is deleted, or when their pod is scaled down. This requires the StatefulSetAutoDeletePVC feature gate to be enabled, which is alpha.  +optional
+             */
+            persistentVolumeClaimRetentionPolicy?: pulumi.Input<inputs.apps.v1.StatefulSetPersistentVolumeClaimRetentionPolicy>;
             /**
              * podManagementPolicy controls how pods are created during initial scale up, when replacing pods on nodes, or when scaling down. The default policy is `OrderedReady`, where pods are created in increasing order (pod-0, then pod-1, etc) and the controller will wait until each pod is ready before continuing. When scaling down, the pods are removed in the opposite order. The alternative policy is `Parallel` which will create pods in parallel to match the desired scale without waiting, and on scale down will delete all pods at once.
              */
@@ -2317,6 +2326,10 @@ export namespace apps {
          * StatefulSetStatus represents the current state of a StatefulSet.
          */
         export interface StatefulSetStatus {
+            /**
+             * Total number of available pods (ready for at least minReadySeconds) targeted by this statefulset. This is an alpha field and requires enabling StatefulSetMinReadySeconds feature gate. Remove omitempty when graduating to beta
+             */
+            availableReplicas?: pulumi.Input<number>;
             /**
              * collisionCount is the count of hash collisions for the StatefulSet. The StatefulSet controller uses this field as a collision avoidance mechanism when it needs to create the name for the newest ControllerRevision.
              */
@@ -4944,7 +4957,9 @@ export namespace batch {
              */
             selector?: pulumi.Input<inputs.meta.v1.LabelSelector>;
             /**
-             * Suspend specifies whether the Job controller should create Pods or not. If a Job is created with suspend set to true, no Pods are created by the Job controller. If a Job is suspended after creation (i.e. the flag goes from false to true), the Job controller will delete all active Pods associated with this Job. Users must design their workload to gracefully handle this. Suspending a Job will reset the StartTime field of the Job, effectively resetting the ActiveDeadlineSeconds timer too. This is an alpha field and requires the SuspendJob feature gate to be enabled; otherwise this field may not be set to true. Defaults to false.
+             * Suspend specifies whether the Job controller should create Pods or not. If a Job is created with suspend set to true, no Pods are created by the Job controller. If a Job is suspended after creation (i.e. the flag goes from false to true), the Job controller will delete all active Pods associated with this Job. Users must design their workload to gracefully handle this. Suspending a Job will reset the StartTime field of the Job, effectively resetting the ActiveDeadlineSeconds timer too. Defaults to false.
+             *
+             * This field is beta-level, gated by SuspendJob feature flag (enabled by default).
              */
             suspend?: pulumi.Input<boolean>;
             /**
@@ -4989,6 +5004,15 @@ export namespace batch {
              * The number of pods which reached phase Succeeded.
              */
             succeeded?: pulumi.Input<number>;
+            /**
+             * UncountedTerminatedPods holds the UIDs of Pods that have terminated but the job controller hasn't yet accounted for in the status counters.
+             *
+             * The job controller creates pods with a finalizer. When a pod terminates (succeeded or failed), the controller does three steps to account for it in the job status: (1) Add the pod UID to the arrays in this field. (2) Remove the pod finalizer. (3) Remove the pod UID from the arrays while increasing the corresponding
+             *     counter.
+             *
+             * This field is alpha-level. The job controller only makes use of this field when the feature gate PodTrackingWithFinalizers is enabled. Old jobs might not be tracked using this field, in which case the field remains null.
+             */
+            uncountedTerminatedPods?: pulumi.Input<inputs.batch.v1.UncountedTerminatedPods>;
         }
 
         /**
@@ -5003,6 +5027,20 @@ export namespace batch {
              * Specification of the desired behavior of the job. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#spec-and-status
              */
             spec?: pulumi.Input<inputs.batch.v1.JobSpec>;
+        }
+
+        /**
+         * UncountedTerminatedPods holds UIDs of Pods that have terminated but haven't been accounted in Job status counters.
+         */
+        export interface UncountedTerminatedPods {
+            /**
+             * Failed holds UIDs of failed Pods.
+             */
+            failed?: pulumi.Input<pulumi.Input<string>[]>;
+            /**
+             * Succeeded holds UIDs of succeeded Pods.
+             */
+            succeeded?: pulumi.Input<pulumi.Input<string>[]>;
         }
     }
 
@@ -5213,7 +5251,7 @@ export namespace certificates {
             kind?: pulumi.Input<"CertificateSigningRequest">;
             metadata?: pulumi.Input<inputs.meta.v1.ObjectMeta>;
             /**
-             * spec contains the certificate request, and is immutable after creation. Only the request, signerName, and usages fields can be set on creation. Other fields are derived by Kubernetes and cannot be modified by users.
+             * spec contains the certificate request, and is immutable after creation. Only the request, signerName, expirationSeconds, and usages fields can be set on creation. Other fields are derived by Kubernetes and cannot be modified by users.
              */
             spec: pulumi.Input<inputs.certificates.v1.CertificateSigningRequestSpec>;
             /**
@@ -5266,6 +5304,23 @@ export namespace certificates {
          * CertificateSigningRequestSpec contains the certificate request.
          */
         export interface CertificateSigningRequestSpec {
+            /**
+             * expirationSeconds is the requested duration of validity of the issued certificate. The certificate signer may issue a certificate with a different validity duration so a client must check the delta between the notBefore and and notAfter fields in the issued certificate to determine the actual duration.
+             *
+             * The v1.22+ in-tree implementations of the well-known Kubernetes signers will honor this field as long as the requested duration is not greater than the maximum duration they will honor per the --cluster-signing-duration CLI flag to the Kubernetes controller manager.
+             *
+             * Certificate signers may not honor this field for various reasons:
+             *
+             *   1. Old signer that is unaware of the field (such as the in-tree
+             *      implementations prior to v1.22)
+             *   2. Signer whose configured maximum is shorter than the requested duration
+             *   3. Signer whose configured minimum is longer than the requested duration
+             *
+             * The minimum valid value for expirationSeconds is 600, i.e. 10 minutes.
+             *
+             * As of v1.22, this field is beta and is controlled via the CSRDuration feature gate.
+             */
+            expirationSeconds?: pulumi.Input<number>;
             /**
              * extra contains extra attributes of the user that created the CertificateSigningRequest. Populated by the API server on creation and immutable.
              */
@@ -5424,6 +5479,16 @@ export namespace certificates {
              * Base64-encoded PKCS#10 CSR data
              */
             request: pulumi.Input<string>;
+            /**
+             * Requested signer for the request. It is a qualified name in the form: `scope-hostname.io/name`. If empty, it will be defaulted:
+             *  1. If it's a kubelet client certificate, it is assigned
+             *     "kubernetes.io/kube-apiserver-client-kubelet".
+             *  2. If it's a kubelet serving certificate, it is assigned
+             *     "kubernetes.io/kubelet-serving".
+             *  3. Otherwise, it is assigned "kubernetes.io/legacy-unknown".
+             * Distribution of trust for signers happens out of band. You can select on this field using `spec.signerName`.
+             */
+            signerName?: pulumi.Input<string>;
             /**
              * UID information about the requesting user. See user.Info interface for details.
              */
@@ -5943,7 +6008,7 @@ export namespace core {
         }
 
         /**
-         * ConfigMapNodeConfigSource contains the information to reference a ConfigMap as a config source for the Node.
+         * ConfigMapNodeConfigSource contains the information to reference a ConfigMap as a config source for the Node. This API is deprecated since 1.22: https://git.k8s.io/enhancements/keps/sig-node/281-dynamic-kubelet-configuration
          */
         export interface ConfigMapNodeConfigSource {
             /**
@@ -6361,7 +6426,7 @@ export namespace core {
          */
         export interface EndpointPort {
             /**
-             * The application protocol for this port. This field follows standard Kubernetes label syntax. Un-prefixed names are reserved for IANA standard service names (as per RFC-6335 and http://www.iana.org/assignments/service-names). Non-standard protocols should use prefixed names such as mycompany.com/my-custom-protocol. This is a beta field that is guarded by the ServiceAppProtocol feature gate and enabled by default.
+             * The application protocol for this port. This field follows standard Kubernetes label syntax. Un-prefixed names are reserved for IANA standard service names (as per RFC-6335 and http://www.iana.org/assignments/service-names). Non-standard protocols should use prefixed names such as mycompany.com/my-custom-protocol.
              */
             appProtocol?: pulumi.Input<string>;
             /**
@@ -6547,7 +6612,7 @@ export namespace core {
              */
             resources?: pulumi.Input<inputs.core.v1.ResourceRequirements>;
             /**
-             * SecurityContext is not allowed for ephemeral containers.
+             * Optional: SecurityContext defines the security options the ephemeral container should be run with. If set, the fields of SecurityContext override the equivalent fields of PodSecurityContext.
              */
             securityContext?: pulumi.Input<inputs.core.v1.SecurityContext>;
             /**
@@ -7402,7 +7467,7 @@ export namespace core {
         }
 
         /**
-         * NodeConfigSource specifies a source of node configuration. Exactly one subfield (excluding metadata) must be non-nil.
+         * NodeConfigSource specifies a source of node configuration. Exactly one subfield (excluding metadata) must be non-nil. This API is deprecated since 1.22
          */
         export interface NodeConfigSource {
             /**
@@ -7490,7 +7555,7 @@ export namespace core {
          */
         export interface NodeSpec {
             /**
-             * If specified, the source to get node configuration from The DynamicKubeletConfig feature gate must be enabled for the Kubelet to use this field
+             * Deprecated. If specified, the source of the node's configuration. The DynamicKubeletConfig feature gate must be enabled for the Kubelet to use this field. This field is deprecated as of 1.22: https://git.k8s.io/enhancements/keps/sig-node/281-dynamic-kubelet-configuration
              */
             configSource?: pulumi.Input<inputs.core.v1.NodeConfigSource>;
             /**
@@ -7748,9 +7813,18 @@ export namespace core {
              */
             accessModes?: pulumi.Input<pulumi.Input<string>[]>;
             /**
-             * This field can be used to specify either: * An existing VolumeSnapshot object (snapshot.storage.k8s.io/VolumeSnapshot) * An existing PVC (PersistentVolumeClaim) * An existing custom resource that implements data population (Alpha) In order to use custom resource types that implement data population, the AnyVolumeDataSource feature gate must be enabled. If the provisioner or an external controller can support the specified data source, it will create a new volume based on the contents of the specified data source.
+             * This field can be used to specify either: * An existing VolumeSnapshot object (snapshot.storage.k8s.io/VolumeSnapshot) * An existing PVC (PersistentVolumeClaim) If the provisioner or an external controller can support the specified data source, it will create a new volume based on the contents of the specified data source. If the AnyVolumeDataSource feature gate is enabled, this field will always have the same contents as the DataSourceRef field.
              */
             dataSource?: pulumi.Input<inputs.core.v1.TypedLocalObjectReference>;
+            /**
+             * Specifies the object from which to populate the volume with data, if a non-empty volume is desired. This may be any local object from a non-empty API group (non core object) or a PersistentVolumeClaim object. When this field is specified, volume binding will only succeed if the type of the specified object matches some installed volume populator or dynamic provisioner. This field will replace the functionality of the DataSource field and as such if both fields are non-empty, they must have the same value. For backwards compatibility, both fields (DataSource and DataSourceRef) will be set to the same value automatically if one of them is empty and the other is non-empty. There are two important differences between DataSource and DataSourceRef: * While DataSource only allows two specific types of objects, DataSourceRef
+             *   allows any non-core object, as well as PersistentVolumeClaim objects.
+             * * While DataSource ignores disallowed values (dropping them), DataSourceRef
+             *   preserves all values, and generates an error if a disallowed value is
+             *   specified.
+             * (Alpha) Using this field requires the AnyVolumeDataSource feature gate to be enabled.
+             */
+            dataSourceRef?: pulumi.Input<inputs.core.v1.TypedLocalObjectReference>;
             /**
              * Resources represents the minimum resources the volume should have. More info: https://kubernetes.io/docs/concepts/storage/persistent-volumes#resources
              */
@@ -8529,7 +8603,7 @@ export namespace core {
              */
             tcpSocket?: pulumi.Input<inputs.core.v1.TCPSocketAction>;
             /**
-             * Optional duration in seconds the pod needs to terminate gracefully upon probe failure. The grace period is the duration in seconds after the processes running in the pod are sent a termination signal and the time when the processes are forcibly halted with a kill signal. Set this value longer than the expected cleanup time for your process. If this value is nil, the pod's terminationGracePeriodSeconds will be used. Otherwise, this value overrides the value provided by the pod spec. Value must be non-negative integer. The value zero indicates stop immediately via the kill signal (no opportunity to shut down). This is an alpha field and requires enabling ProbeTerminationGracePeriod feature gate.
+             * Optional duration in seconds the pod needs to terminate gracefully upon probe failure. The grace period is the duration in seconds after the processes running in the pod are sent a termination signal and the time when the processes are forcibly halted with a kill signal. Set this value longer than the expected cleanup time for your process. If this value is nil, the pod's terminationGracePeriodSeconds will be used. Otherwise, this value overrides the value provided by the pod spec. Value must be non-negative integer. The value zero indicates stop immediately via the kill signal (no opportunity to shut down). This is a beta field and requires enabling ProbeTerminationGracePeriod feature gate. Minimum value is 1. spec.terminationGracePeriodSeconds is used if unset.
              */
             terminationGracePeriodSeconds?: pulumi.Input<number>;
             /**
@@ -9300,7 +9374,7 @@ export namespace core {
          */
         export interface ServicePort {
             /**
-             * The application protocol for this port. This field follows standard Kubernetes label syntax. Un-prefixed names are reserved for IANA standard service names (as per RFC-6335 and http://www.iana.org/assignments/service-names). Non-standard protocols should use prefixed names such as mycompany.com/my-custom-protocol. This is a beta field that is guarded by the ServiceAppProtocol feature gate and enabled by default.
+             * The application protocol for this port. This field follows standard Kubernetes label syntax. Un-prefixed names are reserved for IANA standard service names (as per RFC-6335 and http://www.iana.org/assignments/service-names). Non-standard protocols should use prefixed names such as mycompany.com/my-custom-protocol.
              */
             appProtocol?: pulumi.Input<string>;
             /**
@@ -9330,7 +9404,7 @@ export namespace core {
          */
         export interface ServiceSpec {
             /**
-             * allocateLoadBalancerNodePorts defines if NodePorts will be automatically allocated for services with type LoadBalancer.  Default is "true". It may be set to "false" if the cluster load-balancer does not rely on NodePorts. allocateLoadBalancerNodePorts may only be set for services with type LoadBalancer and will be cleared if the type is changed to any other type. This field is alpha-level and is only honored by servers that enable the ServiceLBNodePortControl feature.
+             * allocateLoadBalancerNodePorts defines if NodePorts will be automatically allocated for services with type LoadBalancer.  Default is "true". It may be set to "false" if the cluster load-balancer does not rely on NodePorts.  If the caller requests specific NodePorts (by specifying a value), those requests will be respected, regardless of this field. This field may only be set for services with type LoadBalancer and will be cleared if the type is changed to any other type. This field is beta-level and is only honored by servers that enable the ServiceLBNodePortControl feature.
              */
             allocateLoadBalancerNodePorts?: pulumi.Input<boolean>;
             /**
@@ -9386,7 +9460,7 @@ export namespace core {
              */
             loadBalancerIP?: pulumi.Input<string>;
             /**
-             * If specified and supported by the platform, this will restrict traffic through the cloud-provider load-balancer will be restricted to the specified client IPs. This field will be ignored if the cloud-provider does not support the feature." More info: https://kubernetes.io/docs/tasks/access-application-cluster/configure-cloud-provider-firewall/
+             * If specified and supported by the platform, this will restrict traffic through the cloud-provider load-balancer will be restricted to the specified client IPs. This field will be ignored if the cloud-provider does not support the feature." More info: https://kubernetes.io/docs/tasks/access-application-cluster/create-external-load-balancer/
              */
             loadBalancerSourceRanges?: pulumi.Input<pulumi.Input<string>[]>;
             /**
@@ -9410,7 +9484,7 @@ export namespace core {
              */
             sessionAffinityConfig?: pulumi.Input<inputs.core.v1.SessionAffinityConfig>;
             /**
-             * topologyKeys is a preference-order list of topology keys which implementations of services should use to preferentially sort endpoints when accessing this Service, it can not be used at the same time as externalTrafficPolicy=Local. Topology keys must be valid label keys and at most 16 keys may be specified. Endpoints are chosen based on the first topology key with available backends. If this field is specified and all entries have no backends that match the topology of the client, the service has no backends for that client and connections should fail. The special value "*" may be used to mean "any topology". This catch-all value, if used, only makes sense as the last value in the list. If this is not specified or empty, no topology constraints will be applied. This field is alpha-level and is only honored by servers that enable the ServiceTopology feature. This field is deprecated and will be removed in a future version.
+             * topologyKeys is a preference-order list of topology keys which implementations of services should use to preferentially sort endpoints when accessing this Service, it can not be used at the same time as externalTrafficPolicy=Local. Topology keys must be valid label keys and at most 16 keys may be specified. Endpoints are chosen based on the first topology key with available backends. If this field is specified and all entries have no backends that match the topology of the client, the service has no backends for that client and connections should fail. The special value "*" may be used to mean "any topology". This catch-all value, if used, only makes sense as the last value in the list. If this is not specified or empty, no topology constraints will be applied.
              */
             topologyKeys?: pulumi.Input<pulumi.Input<string>[]>;
             /**
@@ -10741,6 +10815,20 @@ export namespace extensions {
              * Path is an extended POSIX regex as defined by IEEE Std 1003.1, (i.e this follows the egrep/unix syntax, not the perl syntax) matched against the path of an incoming request. Currently it can contain characters disallowed from the conventional "path" part of a URL as defined by RFC 3986. Paths must begin with a '/'. If unspecified, the path defaults to a catch all sending traffic to the backend.
              */
             path?: pulumi.Input<string>;
+            /**
+             * PathType determines the interpretation of the Path matching. PathType can be one of the following values: * Exact: Matches the URL path exactly. * Prefix: Matches based on a URL path prefix split by '/'. Matching is
+             *   done on a path element by element basis. A path element refers is the
+             *   list of labels in the path split by the '/' separator. A request is a
+             *   match for path p if every p is an element-wise prefix of p of the
+             *   request path. Note that if the last element of the path is a substring
+             *   of the last element in request path, it is not a match (e.g. /foo/bar
+             *   matches /foo/bar/baz, but does not match /foo/barbaz).
+             * * ImplementationSpecific: Interpretation of the Path matching is up to
+             *   the IngressClass. Implementations can treat this as a separate PathType
+             *   or treat it identically to Prefix or Exact path types.
+             * Implementations are required to support all path types. Defaults to ImplementationSpecific.
+             */
+            pathType?: pulumi.Input<string>;
         }
 
         /**
@@ -10840,6 +10928,10 @@ export namespace extensions {
          */
         export interface IngressBackend {
             /**
+             * Resource is an ObjectRef to another Kubernetes resource in the namespace of the Ingress object. If resource is specified, serviceName and servicePort must not be specified.
+             */
+            resource?: pulumi.Input<inputs.core.v1.TypedLocalObjectReference>;
+            /**
              * Specifies the name of the referenced service.
              */
             serviceName: pulumi.Input<string>;
@@ -10873,6 +10965,10 @@ export namespace extensions {
              * A default backend capable of servicing requests that don't match any rule. At least one of 'backend' or 'rules' must be specified. This field is optional to allow the loadbalancer controller or defaulting logic to specify a global default.
              */
             backend?: pulumi.Input<inputs.extensions.v1beta1.IngressBackend>;
+            /**
+             * IngressClassName is the name of the IngressClass cluster resource. The associated IngressClass defines which controller will implement the resource. This replaces the deprecated `kubernetes.io/ingress.class` annotation. For backwards compatibility, when that annotation is set, it must be given precedence over this field. The controller may emit a warning if the field and annotation have different values. Implementations of this API should ignore Ingresses without a class specified. An IngressClass resource may be marked as default, which can be used to set a default value for this field. For more information, refer to the IngressClass documentation.
+             */
+            ingressClassName?: pulumi.Input<string>;
             /**
              * A list of host rules used to configure the Ingress. If unspecified, or no rule matches, all traffic is sent to the default backend.
              */
@@ -12024,12 +12120,21 @@ export namespace flowcontrol {
          * Subject matches the originator of a request, as identified by the request authentication system. There are three ways of matching an originator; by user, group, or service account.
          */
         export interface Subject {
+            /**
+             * `group` matches based on user group name.
+             */
             group?: pulumi.Input<inputs.flowcontrol.v1beta1.GroupSubject>;
             /**
-             * Required
+             * `kind` indicates which one of the other fields is non-empty. Required
              */
             kind: pulumi.Input<string>;
+            /**
+             * `serviceAccount` matches ServiceAccounts.
+             */
             serviceAccount?: pulumi.Input<inputs.flowcontrol.v1beta1.ServiceAccountSubject>;
+            /**
+             * `user` matches based on username.
+             */
             user?: pulumi.Input<inputs.flowcontrol.v1beta1.UserSubject>;
         }
 
@@ -12365,7 +12470,7 @@ export namespace networking {
              *   or treat it identically to Prefix or Exact path types.
              * Implementations are required to support all path types.
              */
-            pathType?: pulumi.Input<string>;
+            pathType: pulumi.Input<string>;
         }
 
         /**
@@ -12663,7 +12768,7 @@ export namespace networking {
          */
         export interface NetworkPolicyPort {
             /**
-             * If set, indicates that the range of ports from port to endPort, inclusive, should be allowed by the policy. This field cannot be defined if the port field is not defined or if the port field is defined as a named (string) port. The endPort must be equal or greater than port. This feature is in Alpha state and should be enabled using the Feature Gate "NetworkPolicyEndPort".
+             * If set, indicates that the range of ports from port to endPort, inclusive, should be allowed by the policy. This field cannot be defined if the port field is not defined or if the port field is defined as a named (string) port. The endPort must be equal or greater than port. This feature is in Beta state and is enabled by default. It can be disabled using the Feature Gate "NetworkPolicyEndPort".
              */
             endPort?: pulumi.Input<number>;
             /**
@@ -12726,6 +12831,20 @@ export namespace networking {
              * Path is an extended POSIX regex as defined by IEEE Std 1003.1, (i.e this follows the egrep/unix syntax, not the perl syntax) matched against the path of an incoming request. Currently it can contain characters disallowed from the conventional "path" part of a URL as defined by RFC 3986. Paths must begin with a '/'. If unspecified, the path defaults to a catch all sending traffic to the backend.
              */
             path?: pulumi.Input<string>;
+            /**
+             * PathType determines the interpretation of the Path matching. PathType can be one of the following values: * Exact: Matches the URL path exactly. * Prefix: Matches based on a URL path prefix split by '/'. Matching is
+             *   done on a path element by element basis. A path element refers is the
+             *   list of labels in the path split by the '/' separator. A request is a
+             *   match for path p if every p is an element-wise prefix of p of the
+             *   request path. Note that if the last element of the path is a substring
+             *   of the last element in request path, it is not a match (e.g. /foo/bar
+             *   matches /foo/bar/baz, but does not match /foo/barbaz).
+             * * ImplementationSpecific: Interpretation of the Path matching is up to
+             *   the IngressClass. Implementations can treat this as a separate PathType
+             *   or treat it identically to Prefix or Exact path types.
+             * Implementations are required to support all path types. Defaults to ImplementationSpecific.
+             */
+            pathType?: pulumi.Input<string>;
         }
 
         /**
@@ -12783,6 +12902,10 @@ export namespace networking {
          */
         export interface IngressBackend {
             /**
+             * Resource is an ObjectRef to another Kubernetes resource in the namespace of the Ingress object. If resource is specified, serviceName and servicePort must not be specified.
+             */
+            resource?: pulumi.Input<inputs.core.v1.TypedLocalObjectReference>;
+            /**
              * Specifies the name of the referenced service.
              */
             serviceName: pulumi.Input<string>;
@@ -12790,6 +12913,42 @@ export namespace networking {
              * Specifies the port of the referenced service.
              */
             servicePort: pulumi.Input<number | string>;
+        }
+
+        /**
+         * IngressClass represents the class of the Ingress, referenced by the Ingress Spec. The `ingressclass.kubernetes.io/is-default-class` annotation can be used to indicate that an IngressClass should be considered default. When a single IngressClass resource has this annotation set to true, new Ingress resources without a class specified will be assigned this default class.
+         */
+        export interface IngressClass {
+            /**
+             * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+             */
+            apiVersion?: pulumi.Input<"networking.k8s.io/v1beta1">;
+            /**
+             * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+             */
+            kind?: pulumi.Input<"IngressClass">;
+            /**
+             * Standard object's metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata
+             */
+            metadata?: pulumi.Input<inputs.meta.v1.ObjectMeta>;
+            /**
+             * Spec is the desired state of the IngressClass. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#spec-and-status
+             */
+            spec?: pulumi.Input<inputs.networking.v1beta1.IngressClassSpec>;
+        }
+
+        /**
+         * IngressClassSpec provides information about the class of an Ingress.
+         */
+        export interface IngressClassSpec {
+            /**
+             * Controller refers to the name of the controller that should handle this class. This allows for different "flavors" that are controlled by the same controller. For example, you may have different Parameters for the same implementing controller. This should be specified as a domain-prefixed path no more than 250 characters in length, e.g. "acme.io/ingress-controller". This field is immutable.
+             */
+            controller?: pulumi.Input<string>;
+            /**
+             * Parameters is a link to a custom resource containing additional configuration for the controller. This is optional if the controller does not require extra parameters.
+             */
+            parameters?: pulumi.Input<inputs.core.v1.TypedLocalObjectReference>;
         }
 
         /**
@@ -12816,6 +12975,10 @@ export namespace networking {
              * A default backend capable of servicing requests that don't match any rule. At least one of 'backend' or 'rules' must be specified. This field is optional to allow the loadbalancer controller or defaulting logic to specify a global default.
              */
             backend?: pulumi.Input<inputs.networking.v1beta1.IngressBackend>;
+            /**
+             * IngressClassName is the name of the IngressClass cluster resource. The associated IngressClass defines which controller will implement the resource. This replaces the deprecated `kubernetes.io/ingress.class` annotation. For backwards compatibility, when that annotation is set, it must be given precedence over this field. The controller may emit a warning if the field and annotation have different values. Implementations of this API should ignore Ingresses without a class specified. An IngressClass resource may be marked as default, which can be used to set a default value for this field. For more information, refer to the IngressClass documentation.
+             */
+            ingressClassName?: pulumi.Input<string>;
             /**
              * A list of host rules used to configure the Ingress. If unspecified, or no rule matches, all traffic is sent to the default backend.
              */
@@ -14243,8 +14406,6 @@ export namespace storage {
              * RequiresRepublish indicates the CSI driver wants `NodePublishVolume` being periodically called to reflect any possible change in the mounted volume. This field defaults to false.
              *
              * Note: After a successful initial NodePublishVolume call, subsequent calls to NodePublishVolume should only update the contents of the volume. New mount points will not be seen by a running container.
-             *
-             * This is a beta feature and only available when the CSIServiceAccountToken feature is enabled.
              */
             requiresRepublish?: pulumi.Input<boolean>;
             /**
@@ -14269,8 +14430,6 @@ export namespace storage {
              * }
              *
              * Note: Audience in each TokenRequest should be different and at most one token is empty string. To receive a new token after expiry, RequiresRepublish can be used to trigger NodePublishVolume periodically.
-             *
-             * This is a beta feature and only available when the CSIServiceAccountToken feature is enabled.
              */
             tokenRequests?: pulumi.Input<pulumi.Input<inputs.storage.v1.TokenRequest>[]>;
             /**

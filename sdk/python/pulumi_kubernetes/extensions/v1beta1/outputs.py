@@ -1247,17 +1247,48 @@ class HTTPIngressPath(dict):
     """
     HTTPIngressPath associates a path regex with a backend. Incoming urls matching the path are forwarded to the backend.
     """
+    @staticmethod
+    def __key_warning(key: str):
+        suggest = None
+        if key == "pathType":
+            suggest = "path_type"
+
+        if suggest:
+            pulumi.log.warn(f"Key '{key}' not found in HTTPIngressPath. Access the value via the '{suggest}' property getter instead.")
+
+    def __getitem__(self, key: str) -> Any:
+        HTTPIngressPath.__key_warning(key)
+        return super().__getitem__(key)
+
+    def get(self, key: str, default = None) -> Any:
+        HTTPIngressPath.__key_warning(key)
+        return super().get(key, default)
+
     def __init__(__self__, *,
                  backend: 'outputs.IngressBackend',
-                 path: Optional[str] = None):
+                 path: Optional[str] = None,
+                 path_type: Optional[str] = None):
         """
         HTTPIngressPath associates a path regex with a backend. Incoming urls matching the path are forwarded to the backend.
         :param 'IngressBackendArgs' backend: Backend defines the referenced service endpoint to which the traffic will be forwarded to.
         :param str path: Path is an extended POSIX regex as defined by IEEE Std 1003.1, (i.e this follows the egrep/unix syntax, not the perl syntax) matched against the path of an incoming request. Currently it can contain characters disallowed from the conventional "path" part of a URL as defined by RFC 3986. Paths must begin with a '/'. If unspecified, the path defaults to a catch all sending traffic to the backend.
+        :param str path_type: PathType determines the interpretation of the Path matching. PathType can be one of the following values: * Exact: Matches the URL path exactly. * Prefix: Matches based on a URL path prefix split by '/'. Matching is
+                 done on a path element by element basis. A path element refers is the
+                 list of labels in the path split by the '/' separator. A request is a
+                 match for path p if every p is an element-wise prefix of p of the
+                 request path. Note that if the last element of the path is a substring
+                 of the last element in request path, it is not a match (e.g. /foo/bar
+                 matches /foo/bar/baz, but does not match /foo/barbaz).
+               * ImplementationSpecific: Interpretation of the Path matching is up to
+                 the IngressClass. Implementations can treat this as a separate PathType
+                 or treat it identically to Prefix or Exact path types.
+               Implementations are required to support all path types. Defaults to ImplementationSpecific.
         """
         pulumi.set(__self__, "backend", backend)
         if path is not None:
             pulumi.set(__self__, "path", path)
+        if path_type is not None:
+            pulumi.set(__self__, "path_type", path_type)
 
     @property
     @pulumi.getter
@@ -1274,6 +1305,24 @@ class HTTPIngressPath(dict):
         Path is an extended POSIX regex as defined by IEEE Std 1003.1, (i.e this follows the egrep/unix syntax, not the perl syntax) matched against the path of an incoming request. Currently it can contain characters disallowed from the conventional "path" part of a URL as defined by RFC 3986. Paths must begin with a '/'. If unspecified, the path defaults to a catch all sending traffic to the backend.
         """
         return pulumi.get(self, "path")
+
+    @property
+    @pulumi.getter(name="pathType")
+    def path_type(self) -> Optional[str]:
+        """
+        PathType determines the interpretation of the Path matching. PathType can be one of the following values: * Exact: Matches the URL path exactly. * Prefix: Matches based on a URL path prefix split by '/'. Matching is
+          done on a path element by element basis. A path element refers is the
+          list of labels in the path split by the '/' separator. A request is a
+          match for path p if every p is an element-wise prefix of p of the
+          request path. Note that if the last element of the path is a substring
+          of the last element in request path, it is not a match (e.g. /foo/bar
+          matches /foo/bar/baz, but does not match /foo/barbaz).
+        * ImplementationSpecific: Interpretation of the Path matching is up to
+          the IngressClass. Implementations can treat this as a separate PathType
+          or treat it identically to Prefix or Exact path types.
+        Implementations are required to support all path types. Defaults to ImplementationSpecific.
+        """
+        return pulumi.get(self, "path_type")
 
 
 @pulumi.output_type
@@ -1557,14 +1606,18 @@ class IngressBackend(dict):
 
     def __init__(__self__, *,
                  service_name: str,
-                 service_port: Any):
+                 service_port: Any,
+                 resource: Optional['_core.v1.outputs.TypedLocalObjectReference'] = None):
         """
         IngressBackend describes all endpoints for a given service and port.
         :param str service_name: Specifies the name of the referenced service.
         :param Union[int, str] service_port: Specifies the port of the referenced service.
+        :param '_core.v1.TypedLocalObjectReferenceArgs' resource: Resource is an ObjectRef to another Kubernetes resource in the namespace of the Ingress object. If resource is specified, serviceName and servicePort must not be specified.
         """
         pulumi.set(__self__, "service_name", service_name)
         pulumi.set(__self__, "service_port", service_port)
+        if resource is not None:
+            pulumi.set(__self__, "resource", resource)
 
     @property
     @pulumi.getter(name="serviceName")
@@ -1581,6 +1634,14 @@ class IngressBackend(dict):
         Specifies the port of the referenced service.
         """
         return pulumi.get(self, "service_port")
+
+    @property
+    @pulumi.getter
+    def resource(self) -> Optional['_core.v1.outputs.TypedLocalObjectReference']:
+        """
+        Resource is an ObjectRef to another Kubernetes resource in the namespace of the Ingress object. If resource is specified, serviceName and servicePort must not be specified.
+        """
+        return pulumi.get(self, "resource")
 
 
 @pulumi.output_type
@@ -1629,18 +1690,39 @@ class IngressSpec(dict):
     """
     IngressSpec describes the Ingress the user wishes to exist.
     """
+    @staticmethod
+    def __key_warning(key: str):
+        suggest = None
+        if key == "ingressClassName":
+            suggest = "ingress_class_name"
+
+        if suggest:
+            pulumi.log.warn(f"Key '{key}' not found in IngressSpec. Access the value via the '{suggest}' property getter instead.")
+
+    def __getitem__(self, key: str) -> Any:
+        IngressSpec.__key_warning(key)
+        return super().__getitem__(key)
+
+    def get(self, key: str, default = None) -> Any:
+        IngressSpec.__key_warning(key)
+        return super().get(key, default)
+
     def __init__(__self__, *,
                  backend: Optional['outputs.IngressBackend'] = None,
+                 ingress_class_name: Optional[str] = None,
                  rules: Optional[Sequence['outputs.IngressRule']] = None,
                  tls: Optional[Sequence['outputs.IngressTLS']] = None):
         """
         IngressSpec describes the Ingress the user wishes to exist.
         :param 'IngressBackendArgs' backend: A default backend capable of servicing requests that don't match any rule. At least one of 'backend' or 'rules' must be specified. This field is optional to allow the loadbalancer controller or defaulting logic to specify a global default.
+        :param str ingress_class_name: IngressClassName is the name of the IngressClass cluster resource. The associated IngressClass defines which controller will implement the resource. This replaces the deprecated `kubernetes.io/ingress.class` annotation. For backwards compatibility, when that annotation is set, it must be given precedence over this field. The controller may emit a warning if the field and annotation have different values. Implementations of this API should ignore Ingresses without a class specified. An IngressClass resource may be marked as default, which can be used to set a default value for this field. For more information, refer to the IngressClass documentation.
         :param Sequence['IngressRuleArgs'] rules: A list of host rules used to configure the Ingress. If unspecified, or no rule matches, all traffic is sent to the default backend.
         :param Sequence['IngressTLSArgs'] tls: TLS configuration. Currently the Ingress only supports a single TLS port, 443. If multiple members of this list specify different hosts, they will be multiplexed on the same port according to the hostname specified through the SNI TLS extension, if the ingress controller fulfilling the ingress supports SNI.
         """
         if backend is not None:
             pulumi.set(__self__, "backend", backend)
+        if ingress_class_name is not None:
+            pulumi.set(__self__, "ingress_class_name", ingress_class_name)
         if rules is not None:
             pulumi.set(__self__, "rules", rules)
         if tls is not None:
@@ -1653,6 +1735,14 @@ class IngressSpec(dict):
         A default backend capable of servicing requests that don't match any rule. At least one of 'backend' or 'rules' must be specified. This field is optional to allow the loadbalancer controller or defaulting logic to specify a global default.
         """
         return pulumi.get(self, "backend")
+
+    @property
+    @pulumi.getter(name="ingressClassName")
+    def ingress_class_name(self) -> Optional[str]:
+        """
+        IngressClassName is the name of the IngressClass cluster resource. The associated IngressClass defines which controller will implement the resource. This replaces the deprecated `kubernetes.io/ingress.class` annotation. For backwards compatibility, when that annotation is set, it must be given precedence over this field. The controller may emit a warning if the field and annotation have different values. Implementations of this API should ignore Ingresses without a class specified. An IngressClass resource may be marked as default, which can be used to set a default value for this field. For more information, refer to the IngressClass documentation.
+        """
+        return pulumi.get(self, "ingress_class_name")
 
     @property
     @pulumi.getter

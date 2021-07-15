@@ -304,6 +304,7 @@ func parseYamlObject(ctx *pulumi.Context, obj map[string]interface{}, transforma
 		"networking.k8s.io/v1/IngressClassList",
 		"networking.k8s.io/v1/IngressList",
 		"networking.k8s.io/v1/NetworkPolicyList",
+		"networking.k8s.io/v1beta1/IngressClassList",
 		"networking.k8s.io/v1beta1/IngressList",
 		"node.k8s.io/v1/RuntimeClassList",
 		"node.k8s.io/v1alpha1/RuntimeClassList",
@@ -942,6 +943,13 @@ func parseYamlObject(ctx *pulumi.Context, obj map[string]interface{}, transforma
 	case "networking.k8s.io/v1beta1/Ingress":
 		var res networkingv1beta1.Ingress
 		err := ctx.RegisterResource("kubernetes:networking.k8s.io/v1beta1:Ingress", metaName, kubernetes.UntypedArgs(obj), &res, opts...)
+		if err != nil {
+			return nil, err
+		}
+		return []resourceTuple{{Name: key, Resource: &res}}, nil
+	case "networking.k8s.io/v1beta1/IngressClass":
+		var res networkingv1beta1.IngressClass
+		err := ctx.RegisterResource("kubernetes:networking.k8s.io/v1beta1:IngressClass", metaName, kubernetes.UntypedArgs(obj), &res, opts...)
 		if err != nil {
 			return nil, err
 		}

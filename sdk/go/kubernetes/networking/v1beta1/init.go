@@ -23,6 +23,10 @@ func (m *module) Construct(ctx *pulumi.Context, name, typ, urn string) (r pulumi
 	switch typ {
 	case "kubernetes:networking.k8s.io/v1beta1:Ingress":
 		r = &Ingress{}
+	case "kubernetes:networking.k8s.io/v1beta1:IngressClass":
+		r = &IngressClass{}
+	case "kubernetes:networking.k8s.io/v1beta1:IngressClassList":
+		r = &IngressClassList{}
 	case "kubernetes:networking.k8s.io/v1beta1:IngressList":
 		r = &IngressList{}
 	default:

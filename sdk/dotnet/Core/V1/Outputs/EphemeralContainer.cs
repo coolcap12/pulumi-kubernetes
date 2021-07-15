@@ -62,7 +62,7 @@ namespace Pulumi.Kubernetes.Types.Outputs.Core.V1
         /// </summary>
         public readonly Pulumi.Kubernetes.Types.Outputs.Core.V1.ResourceRequirements Resources;
         /// <summary>
-        /// SecurityContext is not allowed for ephemeral containers.
+        /// Optional: SecurityContext defines the security options the ephemeral container should be run with. If set, the fields of SecurityContext override the equivalent fields of PodSecurityContext.
         /// </summary>
         public readonly Pulumi.Kubernetes.Types.Outputs.Core.V1.SecurityContext SecurityContext;
         /// <summary>

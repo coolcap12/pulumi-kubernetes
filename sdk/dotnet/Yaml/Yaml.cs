@@ -200,6 +200,8 @@ namespace Pulumi.Kubernetes.Yaml
                 type == typeof(Networking.V1.NetworkPolicy) ? "networking.k8s.io/v1/NetworkPolicy" :
                 type == typeof(Networking.V1.NetworkPolicyList) ? "networking.k8s.io/v1/NetworkPolicyList" :
                 type == typeof(Networking.V1Beta1.Ingress) ? "networking.k8s.io/v1beta1/Ingress" :
+                type == typeof(Networking.V1Beta1.IngressClass) ? "networking.k8s.io/v1beta1/IngressClass" :
+                type == typeof(Networking.V1Beta1.IngressClassList) ? "networking.k8s.io/v1beta1/IngressClassList" :
                 type == typeof(Networking.V1Beta1.IngressList) ? "networking.k8s.io/v1beta1/IngressList" :
                 type == typeof(Node.V1.RuntimeClass) ? "node.k8s.io/v1/RuntimeClass" :
                 type == typeof(Node.V1.RuntimeClassList) ? "node.k8s.io/v1/RuntimeClassList" :
@@ -530,6 +532,7 @@ namespace Pulumi.Kubernetes.Yaml
                 || gvk == "networking.k8s.io/v1/IngressClassList"
                 || gvk == "networking.k8s.io/v1/IngressList"
                 || gvk == "networking.k8s.io/v1/NetworkPolicyList"
+                || gvk == "networking.k8s.io/v1beta1/IngressClassList"
                 || gvk == "networking.k8s.io/v1beta1/IngressList"
                 || gvk == "node.k8s.io/v1/RuntimeClassList"
                 || gvk == "node.k8s.io/v1alpha1/RuntimeClassList"
@@ -1076,6 +1079,12 @@ namespace Pulumi.Kubernetes.Yaml
                         {
                             id.Apply(id => ($"networking.k8s.io/v1beta1/Ingress::{id}",
                                 new Networking.V1Beta1.Ingress(id, obj!, opts) as KubernetesResource))
+                        };
+                    case "networking.k8s.io/v1beta1/IngressClass":
+                        return new[]
+                        {
+                            id.Apply(id => ($"networking.k8s.io/v1beta1/IngressClass::{id}",
+                                new Networking.V1Beta1.IngressClass(id, obj!, opts) as KubernetesResource))
                         };
                     case "node.k8s.io/v1/RuntimeClass":
                         return new[]

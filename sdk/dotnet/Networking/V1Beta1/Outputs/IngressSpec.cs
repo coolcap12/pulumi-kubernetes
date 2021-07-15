@@ -18,6 +18,10 @@ namespace Pulumi.Kubernetes.Types.Outputs.Networking.V1Beta1
         /// </summary>
         public readonly Pulumi.Kubernetes.Types.Outputs.Networking.V1Beta1.IngressBackend Backend;
         /// <summary>
+        /// IngressClassName is the name of the IngressClass cluster resource. The associated IngressClass defines which controller will implement the resource. This replaces the deprecated `kubernetes.io/ingress.class` annotation. For backwards compatibility, when that annotation is set, it must be given precedence over this field. The controller may emit a warning if the field and annotation have different values. Implementations of this API should ignore Ingresses without a class specified. An IngressClass resource may be marked as default, which can be used to set a default value for this field. For more information, refer to the IngressClass documentation.
+        /// </summary>
+        public readonly string IngressClassName;
+        /// <summary>
         /// A list of host rules used to configure the Ingress. If unspecified, or no rule matches, all traffic is sent to the default backend.
         /// </summary>
         public readonly ImmutableArray<Pulumi.Kubernetes.Types.Outputs.Networking.V1Beta1.IngressRule> Rules;
@@ -30,11 +34,14 @@ namespace Pulumi.Kubernetes.Types.Outputs.Networking.V1Beta1
         private IngressSpec(
             Pulumi.Kubernetes.Types.Outputs.Networking.V1Beta1.IngressBackend backend,
 
+            string ingressClassName,
+
             ImmutableArray<Pulumi.Kubernetes.Types.Outputs.Networking.V1Beta1.IngressRule> rules,
 
             ImmutableArray<Pulumi.Kubernetes.Types.Outputs.Networking.V1Beta1.IngressTLS> tls)
         {
             Backend = backend;
+            IngressClassName = ingressClassName;
             Rules = rules;
             Tls = tls;
         }

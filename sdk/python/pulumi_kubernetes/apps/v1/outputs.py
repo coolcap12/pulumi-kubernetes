@@ -32,6 +32,7 @@ __all__ = [
     'RollingUpdateStatefulSetStrategy',
     'StatefulSet',
     'StatefulSetCondition',
+    'StatefulSetPersistentVolumeClaimRetentionPolicy',
     'StatefulSetSpec',
     'StatefulSetStatus',
     'StatefulSetUpdateStrategy',
@@ -1527,8 +1528,8 @@ class RollingUpdateDaemonSet(dict):
                  max_unavailable: Optional[Any] = None):
         """
         Spec to control the desired behavior of daemon set rolling update.
-        :param Union[int, str] max_surge: The maximum number of nodes with an existing available DaemonSet pod that can have an updated DaemonSet pod during during an update. Value can be an absolute number (ex: 5) or a percentage of desired pods (ex: 10%). This can not be 0 if MaxUnavailable is 0. Absolute number is calculated from percentage by rounding up to a minimum of 1. Default value is 0. Example: when this is set to 30%, at most 30% of the total number of nodes that should be running the daemon pod (i.e. status.desiredNumberScheduled) can have their a new pod created before the old pod is marked as deleted. The update starts by launching new pods on 30% of nodes. Once an updated pod is available (Ready for at least minReadySeconds) the old DaemonSet pod on that node is marked deleted. If the old pod becomes unavailable for any reason (Ready transitions to false, is evicted, or is drained) an updated pod is immediatedly created on that node without considering surge limits. Allowing surge implies the possibility that the resources consumed by the daemonset on any given node can double if the readiness check fails, and so resource intensive daemonsets should take into account that they may cause evictions during disruption. This is an alpha field and requires enabling DaemonSetUpdateSurge feature gate.
-        :param Union[int, str] max_unavailable: The maximum number of DaemonSet pods that can be unavailable during the update. Value can be an absolute number (ex: 5) or a percentage of total number of DaemonSet pods at the start of the update (ex: 10%). Absolute number is calculated from percentage by rounding down to a minimum of one. This cannot be 0 if MaxSurge is 0 Default value is 1. Example: when this is set to 30%, at most 30% of the total number of nodes that should be running the daemon pod (i.e. status.desiredNumberScheduled) can have their pods stopped for an update at any given time. The update starts by stopping at most 30% of those DaemonSet pods and then brings up new DaemonSet pods in their place. Once the new pods are available, it then proceeds onto other DaemonSet pods, thus ensuring that at least 70% of original number of DaemonSet pods are available at all times during the update.
+        :param Union[int, str] max_surge: The maximum number of nodes with an existing available DaemonSet pod that can have an updated DaemonSet pod during during an update. Value can be an absolute number (ex: 5) or a percentage of desired pods (ex: 10%). This can not be 0 if MaxUnavailable is 0. Absolute number is calculated from percentage by rounding up to a minimum of 1. Default value is 0. Example: when this is set to 30%, at most 30% of the total number of nodes that should be running the daemon pod (i.e. status.desiredNumberScheduled) can have their a new pod created before the old pod is marked as deleted. The update starts by launching new pods on 30% of nodes. Once an updated pod is available (Ready for at least minReadySeconds) the old DaemonSet pod on that node is marked deleted. If the old pod becomes unavailable for any reason (Ready transitions to false, is evicted, or is drained) an updated pod is immediatedly created on that node without considering surge limits. Allowing surge implies the possibility that the resources consumed by the daemonset on any given node can double if the readiness check fails, and so resource intensive daemonsets should take into account that they may cause evictions during disruption. This is beta field and enabled/disabled by DaemonSetUpdateSurge feature gate.
+        :param Union[int, str] max_unavailable: The maximum number of DaemonSet pods that can be unavailable during the update. Value can be an absolute number (ex: 5) or a percentage of total number of DaemonSet pods at the start of the update (ex: 10%). Absolute number is calculated from percentage by rounding up. This cannot be 0 if MaxSurge is 0 Default value is 1. Example: when this is set to 30%, at most 30% of the total number of nodes that should be running the daemon pod (i.e. status.desiredNumberScheduled) can have their pods stopped for an update at any given time. The update starts by stopping at most 30% of those DaemonSet pods and then brings up new DaemonSet pods in their place. Once the new pods are available, it then proceeds onto other DaemonSet pods, thus ensuring that at least 70% of original number of DaemonSet pods are available at all times during the update.
         """
         if max_surge is not None:
             pulumi.set(__self__, "max_surge", max_surge)
@@ -1539,7 +1540,7 @@ class RollingUpdateDaemonSet(dict):
     @pulumi.getter(name="maxSurge")
     def max_surge(self) -> Optional[Any]:
         """
-        The maximum number of nodes with an existing available DaemonSet pod that can have an updated DaemonSet pod during during an update. Value can be an absolute number (ex: 5) or a percentage of desired pods (ex: 10%). This can not be 0 if MaxUnavailable is 0. Absolute number is calculated from percentage by rounding up to a minimum of 1. Default value is 0. Example: when this is set to 30%, at most 30% of the total number of nodes that should be running the daemon pod (i.e. status.desiredNumberScheduled) can have their a new pod created before the old pod is marked as deleted. The update starts by launching new pods on 30% of nodes. Once an updated pod is available (Ready for at least minReadySeconds) the old DaemonSet pod on that node is marked deleted. If the old pod becomes unavailable for any reason (Ready transitions to false, is evicted, or is drained) an updated pod is immediatedly created on that node without considering surge limits. Allowing surge implies the possibility that the resources consumed by the daemonset on any given node can double if the readiness check fails, and so resource intensive daemonsets should take into account that they may cause evictions during disruption. This is an alpha field and requires enabling DaemonSetUpdateSurge feature gate.
+        The maximum number of nodes with an existing available DaemonSet pod that can have an updated DaemonSet pod during during an update. Value can be an absolute number (ex: 5) or a percentage of desired pods (ex: 10%). This can not be 0 if MaxUnavailable is 0. Absolute number is calculated from percentage by rounding up to a minimum of 1. Default value is 0. Example: when this is set to 30%, at most 30% of the total number of nodes that should be running the daemon pod (i.e. status.desiredNumberScheduled) can have their a new pod created before the old pod is marked as deleted. The update starts by launching new pods on 30% of nodes. Once an updated pod is available (Ready for at least minReadySeconds) the old DaemonSet pod on that node is marked deleted. If the old pod becomes unavailable for any reason (Ready transitions to false, is evicted, or is drained) an updated pod is immediatedly created on that node without considering surge limits. Allowing surge implies the possibility that the resources consumed by the daemonset on any given node can double if the readiness check fails, and so resource intensive daemonsets should take into account that they may cause evictions during disruption. This is beta field and enabled/disabled by DaemonSetUpdateSurge feature gate.
         """
         return pulumi.get(self, "max_surge")
 
@@ -1547,7 +1548,7 @@ class RollingUpdateDaemonSet(dict):
     @pulumi.getter(name="maxUnavailable")
     def max_unavailable(self) -> Optional[Any]:
         """
-        The maximum number of DaemonSet pods that can be unavailable during the update. Value can be an absolute number (ex: 5) or a percentage of total number of DaemonSet pods at the start of the update (ex: 10%). Absolute number is calculated from percentage by rounding down to a minimum of one. This cannot be 0 if MaxSurge is 0 Default value is 1. Example: when this is set to 30%, at most 30% of the total number of nodes that should be running the daemon pod (i.e. status.desiredNumberScheduled) can have their pods stopped for an update at any given time. The update starts by stopping at most 30% of those DaemonSet pods and then brings up new DaemonSet pods in their place. Once the new pods are available, it then proceeds onto other DaemonSet pods, thus ensuring that at least 70% of original number of DaemonSet pods are available at all times during the update.
+        The maximum number of DaemonSet pods that can be unavailable during the update. Value can be an absolute number (ex: 5) or a percentage of total number of DaemonSet pods at the start of the update (ex: 10%). Absolute number is calculated from percentage by rounding up. This cannot be 0 if MaxSurge is 0 Default value is 1. Example: when this is set to 30%, at most 30% of the total number of nodes that should be running the daemon pod (i.e. status.desiredNumberScheduled) can have their pods stopped for an update at any given time. The update starts by stopping at most 30% of those DaemonSet pods and then brings up new DaemonSet pods in their place. Once the new pods are available, it then proceeds onto other DaemonSet pods, thus ensuring that at least 70% of original number of DaemonSet pods are available at all times during the update.
         """
         return pulumi.get(self, "max_unavailable")
 
@@ -1836,6 +1837,60 @@ class StatefulSetCondition(dict):
 
 
 @pulumi.output_type
+class StatefulSetPersistentVolumeClaimRetentionPolicy(dict):
+    """
+    StatefulSetPersistentVolumeClaimRetentionPolicy describes the policy used for PVCs created from the StatefulSet VolumeClaimTemplates.
+    """
+    @staticmethod
+    def __key_warning(key: str):
+        suggest = None
+        if key == "whenDeleted":
+            suggest = "when_deleted"
+        elif key == "whenScaled":
+            suggest = "when_scaled"
+
+        if suggest:
+            pulumi.log.warn(f"Key '{key}' not found in StatefulSetPersistentVolumeClaimRetentionPolicy. Access the value via the '{suggest}' property getter instead.")
+
+    def __getitem__(self, key: str) -> Any:
+        StatefulSetPersistentVolumeClaimRetentionPolicy.__key_warning(key)
+        return super().__getitem__(key)
+
+    def get(self, key: str, default = None) -> Any:
+        StatefulSetPersistentVolumeClaimRetentionPolicy.__key_warning(key)
+        return super().get(key, default)
+
+    def __init__(__self__, *,
+                 when_deleted: Optional[str] = None,
+                 when_scaled: Optional[str] = None):
+        """
+        StatefulSetPersistentVolumeClaimRetentionPolicy describes the policy used for PVCs created from the StatefulSet VolumeClaimTemplates.
+        :param str when_deleted: WhenDeleted specifies what happens to PVCs created from StatefulSet VolumeClaimTemplates when the StatefulSet is deleted. The default policy of `Retain` causes PVCs to not be affected by StatefulSet deletion. The `Delete` policy causes those PVCs to be deleted.
+        :param str when_scaled: WhenScaled specifies what happens to PVCs created from StatefulSet VolumeClaimTemplates when the StatefulSet is scaled down. The default policy of `Retain` causes PVCs to not be affected by a scaledown. The `Delete` policy causes the associated PVCs for any excess pods above the replica count to be deleted.
+        """
+        if when_deleted is not None:
+            pulumi.set(__self__, "when_deleted", when_deleted)
+        if when_scaled is not None:
+            pulumi.set(__self__, "when_scaled", when_scaled)
+
+    @property
+    @pulumi.getter(name="whenDeleted")
+    def when_deleted(self) -> Optional[str]:
+        """
+        WhenDeleted specifies what happens to PVCs created from StatefulSet VolumeClaimTemplates when the StatefulSet is deleted. The default policy of `Retain` causes PVCs to not be affected by StatefulSet deletion. The `Delete` policy causes those PVCs to be deleted.
+        """
+        return pulumi.get(self, "when_deleted")
+
+    @property
+    @pulumi.getter(name="whenScaled")
+    def when_scaled(self) -> Optional[str]:
+        """
+        WhenScaled specifies what happens to PVCs created from StatefulSet VolumeClaimTemplates when the StatefulSet is scaled down. The default policy of `Retain` causes PVCs to not be affected by a scaledown. The `Delete` policy causes the associated PVCs for any excess pods above the replica count to be deleted.
+        """
+        return pulumi.get(self, "when_scaled")
+
+
+@pulumi.output_type
 class StatefulSetSpec(dict):
     """
     A StatefulSetSpec is the specification of a StatefulSet.
@@ -1845,6 +1900,10 @@ class StatefulSetSpec(dict):
         suggest = None
         if key == "serviceName":
             suggest = "service_name"
+        elif key == "minReadySeconds":
+            suggest = "min_ready_seconds"
+        elif key == "persistentVolumeClaimRetentionPolicy":
+            suggest = "persistent_volume_claim_retention_policy"
         elif key == "podManagementPolicy":
             suggest = "pod_management_policy"
         elif key == "revisionHistoryLimit":
@@ -1869,6 +1928,8 @@ class StatefulSetSpec(dict):
                  selector: '_meta.v1.outputs.LabelSelector',
                  service_name: str,
                  template: '_core.v1.outputs.PodTemplateSpec',
+                 min_ready_seconds: Optional[int] = None,
+                 persistent_volume_claim_retention_policy: Optional['outputs.StatefulSetPersistentVolumeClaimRetentionPolicy'] = None,
                  pod_management_policy: Optional[str] = None,
                  replicas: Optional[int] = None,
                  revision_history_limit: Optional[int] = None,
@@ -1879,6 +1940,8 @@ class StatefulSetSpec(dict):
         :param '_meta.v1.LabelSelectorArgs' selector: selector is a label query over pods that should match the replica count. It must match the pod template's labels. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/#label-selectors
         :param str service_name: serviceName is the name of the service that governs this StatefulSet. This service must exist before the StatefulSet, and is responsible for the network identity of the set. Pods get DNS/hostnames that follow the pattern: pod-specific-string.serviceName.default.svc.cluster.local where "pod-specific-string" is managed by the StatefulSet controller.
         :param '_core.v1.PodTemplateSpecArgs' template: template is the object that describes the pod that will be created if insufficient replicas are detected. Each pod stamped out by the StatefulSet will fulfill this Template, but have a unique identity from the rest of the StatefulSet.
+        :param int min_ready_seconds: Minimum number of seconds for which a newly created pod should be ready without any of its container crashing for it to be considered available. Defaults to 0 (pod will be considered available as soon as it is ready) This is an alpha field and requires enabling StatefulSetMinReadySeconds feature gate.
+        :param 'StatefulSetPersistentVolumeClaimRetentionPolicyArgs' persistent_volume_claim_retention_policy: persistentVolumeClaimRetentionPolicy describes the lifecycle of persistent volume claims created from volumeClaimTemplates. By default, all persistent volume claims are created as needed and retained until manually deleted. This policy allows the lifecycle to be altered, for example by deleting persistent volume claims when their stateful set is deleted, or when their pod is scaled down. This requires the StatefulSetAutoDeletePVC feature gate to be enabled, which is alpha.  +optional
         :param str pod_management_policy: podManagementPolicy controls how pods are created during initial scale up, when replacing pods on nodes, or when scaling down. The default policy is `OrderedReady`, where pods are created in increasing order (pod-0, then pod-1, etc) and the controller will wait until each pod is ready before continuing. When scaling down, the pods are removed in the opposite order. The alternative policy is `Parallel` which will create pods in parallel to match the desired scale without waiting, and on scale down will delete all pods at once.
         :param int replicas: replicas is the desired number of replicas of the given Template. These are replicas in the sense that they are instantiations of the same Template, but individual replicas also have a consistent identity. If unspecified, defaults to 1.
         :param int revision_history_limit: revisionHistoryLimit is the maximum number of revisions that will be maintained in the StatefulSet's revision history. The revision history consists of all revisions not represented by a currently applied StatefulSetSpec version. The default value is 10.
@@ -1888,6 +1951,10 @@ class StatefulSetSpec(dict):
         pulumi.set(__self__, "selector", selector)
         pulumi.set(__self__, "service_name", service_name)
         pulumi.set(__self__, "template", template)
+        if min_ready_seconds is not None:
+            pulumi.set(__self__, "min_ready_seconds", min_ready_seconds)
+        if persistent_volume_claim_retention_policy is not None:
+            pulumi.set(__self__, "persistent_volume_claim_retention_policy", persistent_volume_claim_retention_policy)
         if pod_management_policy is not None:
             pulumi.set(__self__, "pod_management_policy", pod_management_policy)
         if replicas is not None:
@@ -1922,6 +1989,22 @@ class StatefulSetSpec(dict):
         template is the object that describes the pod that will be created if insufficient replicas are detected. Each pod stamped out by the StatefulSet will fulfill this Template, but have a unique identity from the rest of the StatefulSet.
         """
         return pulumi.get(self, "template")
+
+    @property
+    @pulumi.getter(name="minReadySeconds")
+    def min_ready_seconds(self) -> Optional[int]:
+        """
+        Minimum number of seconds for which a newly created pod should be ready without any of its container crashing for it to be considered available. Defaults to 0 (pod will be considered available as soon as it is ready) This is an alpha field and requires enabling StatefulSetMinReadySeconds feature gate.
+        """
+        return pulumi.get(self, "min_ready_seconds")
+
+    @property
+    @pulumi.getter(name="persistentVolumeClaimRetentionPolicy")
+    def persistent_volume_claim_retention_policy(self) -> Optional['outputs.StatefulSetPersistentVolumeClaimRetentionPolicy']:
+        """
+        persistentVolumeClaimRetentionPolicy describes the lifecycle of persistent volume claims created from volumeClaimTemplates. By default, all persistent volume claims are created as needed and retained until manually deleted. This policy allows the lifecycle to be altered, for example by deleting persistent volume claims when their stateful set is deleted, or when their pod is scaled down. This requires the StatefulSetAutoDeletePVC feature gate to be enabled, which is alpha.  +optional
+        """
+        return pulumi.get(self, "persistent_volume_claim_retention_policy")
 
     @property
     @pulumi.getter(name="podManagementPolicy")
@@ -1972,7 +2055,9 @@ class StatefulSetStatus(dict):
     @staticmethod
     def __key_warning(key: str):
         suggest = None
-        if key == "collisionCount":
+        if key == "availableReplicas":
+            suggest = "available_replicas"
+        elif key == "collisionCount":
             suggest = "collision_count"
         elif key == "currentReplicas":
             suggest = "current_replicas"
@@ -2000,6 +2085,7 @@ class StatefulSetStatus(dict):
 
     def __init__(__self__, *,
                  replicas: int,
+                 available_replicas: Optional[int] = None,
                  collision_count: Optional[int] = None,
                  conditions: Optional[Sequence['outputs.StatefulSetCondition']] = None,
                  current_replicas: Optional[int] = None,
@@ -2011,6 +2097,7 @@ class StatefulSetStatus(dict):
         """
         StatefulSetStatus represents the current state of a StatefulSet.
         :param int replicas: replicas is the number of Pods created by the StatefulSet controller.
+        :param int available_replicas: Total number of available pods (ready for at least minReadySeconds) targeted by this statefulset. This is an alpha field and requires enabling StatefulSetMinReadySeconds feature gate. Remove omitempty when graduating to beta
         :param int collision_count: collisionCount is the count of hash collisions for the StatefulSet. The StatefulSet controller uses this field as a collision avoidance mechanism when it needs to create the name for the newest ControllerRevision.
         :param Sequence['StatefulSetConditionArgs'] conditions: Represents the latest available observations of a statefulset's current state.
         :param int current_replicas: currentReplicas is the number of Pods created by the StatefulSet controller from the StatefulSet version indicated by currentRevision.
@@ -2021,6 +2108,8 @@ class StatefulSetStatus(dict):
         :param int updated_replicas: updatedReplicas is the number of Pods created by the StatefulSet controller from the StatefulSet version indicated by updateRevision.
         """
         pulumi.set(__self__, "replicas", replicas)
+        if available_replicas is not None:
+            pulumi.set(__self__, "available_replicas", available_replicas)
         if collision_count is not None:
             pulumi.set(__self__, "collision_count", collision_count)
         if conditions is not None:
@@ -2045,6 +2134,14 @@ class StatefulSetStatus(dict):
         replicas is the number of Pods created by the StatefulSet controller.
         """
         return pulumi.get(self, "replicas")
+
+    @property
+    @pulumi.getter(name="availableReplicas")
+    def available_replicas(self) -> Optional[int]:
+        """
+        Total number of available pods (ready for at least minReadySeconds) targeted by this statefulset. This is an alpha field and requires enabling StatefulSetMinReadySeconds feature gate. Remove omitempty when graduating to beta
+        """
+        return pulumi.get(self, "available_replicas")
 
     @property
     @pulumi.getter(name="collisionCount")

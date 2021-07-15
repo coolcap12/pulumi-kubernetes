@@ -8,43 +8,34 @@ import pulumi.runtime
 from typing import Any, Mapping, Optional, Sequence, Union, overload
 from ... import _utilities
 from . import outputs
+from ... import core as _core
 from ... import meta as _meta
 from ._inputs import *
 
-__all__ = ['CustomResourceDefinitionListArgs', 'CustomResourceDefinitionList']
+__all__ = ['IngressClassInitArgs', 'IngressClass']
 
 @pulumi.input_type
-class CustomResourceDefinitionListArgs:
+class IngressClassInitArgs:
     def __init__(__self__, *,
-                 items: pulumi.Input[Sequence[pulumi.Input['CustomResourceDefinitionArgs']]],
                  api_version: Optional[pulumi.Input[str]] = None,
                  kind: Optional[pulumi.Input[str]] = None,
-                 metadata: Optional[pulumi.Input['_meta.v1.ListMetaArgs']] = None):
+                 metadata: Optional[pulumi.Input['_meta.v1.ObjectMetaArgs']] = None,
+                 spec: Optional[pulumi.Input['IngressClassSpecArgs']] = None):
         """
-        The set of arguments for constructing a CustomResourceDefinitionList resource.
-        :param pulumi.Input[Sequence[pulumi.Input['CustomResourceDefinitionArgs']]] items: items list individual CustomResourceDefinition objects
+        The set of arguments for constructing a IngressClass resource.
         :param pulumi.Input[str] api_version: APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
         :param pulumi.Input[str] kind: Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+        :param pulumi.Input['_meta.v1.ObjectMetaArgs'] metadata: Standard object's metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata
+        :param pulumi.Input['IngressClassSpecArgs'] spec: Spec is the desired state of the IngressClass. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#spec-and-status
         """
-        pulumi.set(__self__, "items", items)
         if api_version is not None:
-            pulumi.set(__self__, "api_version", 'apiextensions.k8s.io/v1beta1')
+            pulumi.set(__self__, "api_version", 'networking.k8s.io/v1beta1')
         if kind is not None:
-            pulumi.set(__self__, "kind", 'CustomResourceDefinitionList')
+            pulumi.set(__self__, "kind", 'IngressClass')
         if metadata is not None:
             pulumi.set(__self__, "metadata", metadata)
-
-    @property
-    @pulumi.getter
-    def items(self) -> pulumi.Input[Sequence[pulumi.Input['CustomResourceDefinitionArgs']]]:
-        """
-        items list individual CustomResourceDefinition objects
-        """
-        return pulumi.get(self, "items")
-
-    @items.setter
-    def items(self, value: pulumi.Input[Sequence[pulumi.Input['CustomResourceDefinitionArgs']]]):
-        pulumi.set(self, "items", value)
+        if spec is not None:
+            pulumi.set(__self__, "spec", spec)
 
     @property
     @pulumi.getter(name="apiVersion")
@@ -72,49 +63,65 @@ class CustomResourceDefinitionListArgs:
 
     @property
     @pulumi.getter
-    def metadata(self) -> Optional[pulumi.Input['_meta.v1.ListMetaArgs']]:
+    def metadata(self) -> Optional[pulumi.Input['_meta.v1.ObjectMetaArgs']]:
+        """
+        Standard object's metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata
+        """
         return pulumi.get(self, "metadata")
 
     @metadata.setter
-    def metadata(self, value: Optional[pulumi.Input['_meta.v1.ListMetaArgs']]):
+    def metadata(self, value: Optional[pulumi.Input['_meta.v1.ObjectMetaArgs']]):
         pulumi.set(self, "metadata", value)
 
+    @property
+    @pulumi.getter
+    def spec(self) -> Optional[pulumi.Input['IngressClassSpecArgs']]:
+        """
+        Spec is the desired state of the IngressClass. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#spec-and-status
+        """
+        return pulumi.get(self, "spec")
 
-class CustomResourceDefinitionList(pulumi.CustomResource):
+    @spec.setter
+    def spec(self, value: Optional[pulumi.Input['IngressClassSpecArgs']]):
+        pulumi.set(self, "spec", value)
+
+
+class IngressClass(pulumi.CustomResource):
     @overload
     def __init__(__self__,
                  resource_name: str,
                  opts: Optional[pulumi.ResourceOptions] = None,
                  api_version: Optional[pulumi.Input[str]] = None,
-                 items: Optional[pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['CustomResourceDefinitionArgs']]]]] = None,
                  kind: Optional[pulumi.Input[str]] = None,
-                 metadata: Optional[pulumi.Input[pulumi.InputType['_meta.v1.ListMetaArgs']]] = None,
+                 metadata: Optional[pulumi.Input[pulumi.InputType['_meta.v1.ObjectMetaArgs']]] = None,
+                 spec: Optional[pulumi.Input[pulumi.InputType['IngressClassSpecArgs']]] = None,
                  __props__=None):
         """
-        CustomResourceDefinitionList is a list of CustomResourceDefinition objects.
+        IngressClass represents the class of the Ingress, referenced by the Ingress Spec. The `ingressclass.kubernetes.io/is-default-class` annotation can be used to indicate that an IngressClass should be considered default. When a single IngressClass resource has this annotation set to true, new Ingress resources without a class specified will be assigned this default class.
 
         :param str resource_name: The name of the resource.
         :param pulumi.ResourceOptions opts: Options for the resource.
         :param pulumi.Input[str] api_version: APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
-        :param pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['CustomResourceDefinitionArgs']]]] items: items list individual CustomResourceDefinition objects
         :param pulumi.Input[str] kind: Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+        :param pulumi.Input[pulumi.InputType['_meta.v1.ObjectMetaArgs']] metadata: Standard object's metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata
+        :param pulumi.Input[pulumi.InputType['IngressClassSpecArgs']] spec: Spec is the desired state of the IngressClass. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#spec-and-status
         """
         ...
     @overload
     def __init__(__self__,
                  resource_name: str,
-                 args: CustomResourceDefinitionListArgs,
+                 args: Optional[IngressClassInitArgs] = None,
                  opts: Optional[pulumi.ResourceOptions] = None):
         """
-        CustomResourceDefinitionList is a list of CustomResourceDefinition objects.
+        IngressClass represents the class of the Ingress, referenced by the Ingress Spec. The `ingressclass.kubernetes.io/is-default-class` annotation can be used to indicate that an IngressClass should be considered default. When a single IngressClass resource has this annotation set to true, new Ingress resources without a class specified will be assigned this default class.
 
         :param str resource_name: The name of the resource.
-        :param CustomResourceDefinitionListArgs args: The arguments to use to populate this resource's properties.
+        :param IngressClassInitArgs args: The arguments to use to populate this resource's properties.
         :param pulumi.ResourceOptions opts: Options for the resource.
         """
         ...
     def __init__(__self__, resource_name: str, *args, **kwargs):
-        resource_args, opts = _utilities.get_resource_args_opts(CustomResourceDefinitionListArgs, pulumi.ResourceOptions, *args, **kwargs)
+        resource_args, opts = _utilities.get_resource_args_opts(IngressClassInitArgs, pulumi.ResourceOptions, *args, **kwargs)
         if resource_args is not None:
             __self__._internal_init(resource_name, opts, **resource_args.__dict__)
         else:
@@ -124,9 +131,9 @@ class CustomResourceDefinitionList(pulumi.CustomResource):
                  resource_name: str,
                  opts: Optional[pulumi.ResourceOptions] = None,
                  api_version: Optional[pulumi.Input[str]] = None,
-                 items: Optional[pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['CustomResourceDefinitionArgs']]]]] = None,
                  kind: Optional[pulumi.Input[str]] = None,
-                 metadata: Optional[pulumi.Input[pulumi.InputType['_meta.v1.ListMetaArgs']]] = None,
+                 metadata: Optional[pulumi.Input[pulumi.InputType['_meta.v1.ObjectMetaArgs']]] = None,
+                 spec: Optional[pulumi.Input[pulumi.InputType['IngressClassSpecArgs']]] = None,
                  __props__=None):
         if opts is None:
             opts = pulumi.ResourceOptions()
@@ -137,16 +144,16 @@ class CustomResourceDefinitionList(pulumi.CustomResource):
         if opts.id is None:
             if __props__ is not None:
                 raise TypeError('__props__ is only valid when passed in combination with a valid opts.id to get an existing resource')
-            __props__ = CustomResourceDefinitionListArgs.__new__(CustomResourceDefinitionListArgs)
+            __props__ = IngressClassInitArgs.__new__(IngressClassInitArgs)
 
-            __props__.__dict__["api_version"] = 'apiextensions.k8s.io/v1beta1'
-            if items is None and not opts.urn:
-                raise TypeError("Missing required property 'items'")
-            __props__.__dict__["items"] = items
-            __props__.__dict__["kind"] = 'CustomResourceDefinitionList'
+            __props__.__dict__["api_version"] = 'networking.k8s.io/v1beta1'
+            __props__.__dict__["kind"] = 'IngressClass'
             __props__.__dict__["metadata"] = metadata
-        super(CustomResourceDefinitionList, __self__).__init__(
-            'kubernetes:apiextensions.k8s.io/v1beta1:CustomResourceDefinitionList',
+            __props__.__dict__["spec"] = spec
+        alias_opts = pulumi.ResourceOptions(aliases=[pulumi.Alias(type_="kubernetes:networking.k8s.io/v1:IngressClass")])
+        opts = pulumi.ResourceOptions.merge(opts, alias_opts)
+        super(IngressClass, __self__).__init__(
+            'kubernetes:networking.k8s.io/v1beta1:IngressClass',
             resource_name,
             __props__,
             opts)
@@ -154,9 +161,9 @@ class CustomResourceDefinitionList(pulumi.CustomResource):
     @staticmethod
     def get(resource_name: str,
             id: pulumi.Input[str],
-            opts: Optional[pulumi.ResourceOptions] = None) -> 'CustomResourceDefinitionList':
+            opts: Optional[pulumi.ResourceOptions] = None) -> 'IngressClass':
         """
-        Get an existing CustomResourceDefinitionList resource's state with the given name, id, and optional extra
+        Get an existing IngressClass resource's state with the given name, id, and optional extra
         properties used to qualify the lookup.
 
         :param str resource_name: The unique name of the resulting resource.
@@ -165,13 +172,13 @@ class CustomResourceDefinitionList(pulumi.CustomResource):
         """
         opts = pulumi.ResourceOptions.merge(opts, pulumi.ResourceOptions(id=id))
 
-        __props__ = CustomResourceDefinitionListArgs.__new__(CustomResourceDefinitionListArgs)
+        __props__ = IngressClassInitArgs.__new__(IngressClassInitArgs)
 
         __props__.__dict__["api_version"] = None
-        __props__.__dict__["items"] = None
         __props__.__dict__["kind"] = None
         __props__.__dict__["metadata"] = None
-        return CustomResourceDefinitionList(resource_name, opts=opts, __props__=__props__)
+        __props__.__dict__["spec"] = None
+        return IngressClass(resource_name, opts=opts, __props__=__props__)
 
     @property
     @pulumi.getter(name="apiVersion")
@@ -183,14 +190,6 @@ class CustomResourceDefinitionList(pulumi.CustomResource):
 
     @property
     @pulumi.getter
-    def items(self) -> pulumi.Output[Sequence['outputs.CustomResourceDefinition']]:
-        """
-        items list individual CustomResourceDefinition objects
-        """
-        return pulumi.get(self, "items")
-
-    @property
-    @pulumi.getter
     def kind(self) -> pulumi.Output[Optional[str]]:
         """
         Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
@@ -199,6 +198,17 @@ class CustomResourceDefinitionList(pulumi.CustomResource):
 
     @property
     @pulumi.getter
-    def metadata(self) -> pulumi.Output[Optional['_meta.v1.outputs.ListMeta']]:
+    def metadata(self) -> pulumi.Output[Optional['_meta.v1.outputs.ObjectMeta']]:
+        """
+        Standard object's metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata
+        """
         return pulumi.get(self, "metadata")
+
+    @property
+    @pulumi.getter
+    def spec(self) -> pulumi.Output[Optional['outputs.IngressClassSpec']]:
+        """
+        Spec is the desired state of the IngressClass. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#spec-and-status
+        """
+        return pulumi.get(self, "spec")
 

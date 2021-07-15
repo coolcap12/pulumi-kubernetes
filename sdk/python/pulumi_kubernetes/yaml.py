@@ -1351,6 +1351,18 @@ def _parse_yaml_object(
         return [identifier.apply(
             lambda x: (f"networking.k8s.io/v1beta1/Ingress:{x}",
                        Ingress(f"{x}", opts, **obj)))]
+    if gvk == "networking.k8s.io/v1beta1/IngressClass":
+        # Import locally to avoid name collisions.
+        from pulumi_kubernetes.networking.v1beta1 import IngressClass
+        return [identifier.apply(
+            lambda x: (f"networking.k8s.io/v1beta1/IngressClass:{x}",
+                       IngressClass(f"{x}", opts, **obj)))]
+    if gvk == "networking.k8s.io/v1beta1/IngressClassList":
+        # Import locally to avoid name collisions.
+        from pulumi_kubernetes.networking.v1beta1 import IngressClassList
+        return [identifier.apply(
+            lambda x: (f"networking.k8s.io/v1beta1/IngressClassList:{x}",
+                       IngressClassList(f"{x}", opts, **obj)))]
     if gvk == "networking.k8s.io/v1beta1/IngressList":
         # Import locally to avoid name collisions.
         from pulumi_kubernetes.networking.v1beta1 import IngressList

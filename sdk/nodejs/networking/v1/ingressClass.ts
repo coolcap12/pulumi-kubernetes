@@ -76,6 +76,8 @@ export class IngressClass extends pulumi.CustomResource {
         if (!opts.version) {
             opts = pulumi.mergeOptions(opts, { version: utilities.getVersion()});
         }
+        const aliasOpts = { aliases: [{ type: "kubernetes:networking.k8s.io/v1beta1:IngressClass" }] };
+        opts = pulumi.mergeOptions(opts, aliasOpts);
         super(IngressClass.__pulumiType, name, inputs, opts);
     }
 }

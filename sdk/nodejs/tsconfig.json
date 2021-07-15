@@ -219,6 +219,8 @@
         "networking/v1/networkPolicyList.ts",
         "networking/v1beta1/index.ts",
         "networking/v1beta1/ingress.ts",
+        "networking/v1beta1/ingressClass.ts",
+        "networking/v1beta1/ingressClassList.ts",
         "networking/v1beta1/ingressList.ts",
         "node/index.ts",
         "node/v1/index.ts",

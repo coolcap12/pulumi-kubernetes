@@ -40,8 +40,8 @@ namespace Pulumi.Kubernetes.Types.Inputs.Networking.V1
         ///   or treat it identically to Prefix or Exact path types.
         /// Implementations are required to support all path types.
         /// </summary>
-        [Input("pathType")]
-        public Input<string>? PathType { get; set; }
+        [Input("pathType", required: true)]
+        public Input<string> PathType { get; set; } = null!;
 
         public HTTPIngressPathArgs()
         {

@@ -332,13 +332,12 @@ func (o CustomResourceConversionPtrOutput) WebhookClientConfig() WebhookClientCo
 	}).(WebhookClientConfigPtrOutput)
 }
 
-// CustomResourceDefinition represents a resource that should be exposed on the API server.  Its name MUST be in the format <.spec.name>.<.spec.group>. Deprecated in v1.16, planned for removal in v1.22. Use apiextensions.k8s.io/v1 CustomResourceDefinition instead.
+// CustomResourceDefinition represents a resource that should be exposed on the API server.  Its name MUST be in the format <.spec.name>.<.spec.group>. Deprecated in v1.16, planned for removal in v1.19. Use apiextensions.k8s.io/v1 CustomResourceDefinition instead.
 type CustomResourceDefinitionType struct {
 	// APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
 	ApiVersion *string `pulumi:"apiVersion"`
 	// Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
-	Kind *string `pulumi:"kind"`
-	// Standard object's metadata More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata
+	Kind     *string            `pulumi:"kind"`
 	Metadata *metav1.ObjectMeta `pulumi:"metadata"`
 	// spec describes how the user wants the resources to appear
 	Spec CustomResourceDefinitionSpec `pulumi:"spec"`
@@ -357,13 +356,12 @@ type CustomResourceDefinitionTypeInput interface {
 	ToCustomResourceDefinitionTypeOutputWithContext(context.Context) CustomResourceDefinitionTypeOutput
 }
 
-// CustomResourceDefinition represents a resource that should be exposed on the API server.  Its name MUST be in the format <.spec.name>.<.spec.group>. Deprecated in v1.16, planned for removal in v1.22. Use apiextensions.k8s.io/v1 CustomResourceDefinition instead.
+// CustomResourceDefinition represents a resource that should be exposed on the API server.  Its name MUST be in the format <.spec.name>.<.spec.group>. Deprecated in v1.16, planned for removal in v1.19. Use apiextensions.k8s.io/v1 CustomResourceDefinition instead.
 type CustomResourceDefinitionTypeArgs struct {
 	// APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
 	ApiVersion pulumi.StringPtrInput `pulumi:"apiVersion"`
 	// Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
-	Kind pulumi.StringPtrInput `pulumi:"kind"`
-	// Standard object's metadata More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata
+	Kind     pulumi.StringPtrInput     `pulumi:"kind"`
 	Metadata metav1.ObjectMetaPtrInput `pulumi:"metadata"`
 	// spec describes how the user wants the resources to appear
 	Spec CustomResourceDefinitionSpecInput `pulumi:"spec"`
@@ -408,7 +406,7 @@ func (i CustomResourceDefinitionTypeArray) ToCustomResourceDefinitionTypeArrayOu
 	return pulumi.ToOutputWithContext(ctx, i).(CustomResourceDefinitionTypeArrayOutput)
 }
 
-// CustomResourceDefinition represents a resource that should be exposed on the API server.  Its name MUST be in the format <.spec.name>.<.spec.group>. Deprecated in v1.16, planned for removal in v1.22. Use apiextensions.k8s.io/v1 CustomResourceDefinition instead.
+// CustomResourceDefinition represents a resource that should be exposed on the API server.  Its name MUST be in the format <.spec.name>.<.spec.group>. Deprecated in v1.16, planned for removal in v1.19. Use apiextensions.k8s.io/v1 CustomResourceDefinition instead.
 type CustomResourceDefinitionTypeOutput struct{ *pulumi.OutputState }
 
 func (CustomResourceDefinitionTypeOutput) ElementType() reflect.Type {
@@ -433,7 +431,6 @@ func (o CustomResourceDefinitionTypeOutput) Kind() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v CustomResourceDefinitionType) *string { return v.Kind }).(pulumi.StringPtrOutput)
 }
 
-// Standard object's metadata More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata
 func (o CustomResourceDefinitionTypeOutput) Metadata() metav1.ObjectMetaPtrOutput {
 	return o.ApplyT(func(v CustomResourceDefinitionType) *metav1.ObjectMeta { return v.Metadata }).(metav1.ObjectMetaPtrOutput)
 }
@@ -611,8 +608,7 @@ type CustomResourceDefinitionListType struct {
 	// items list individual CustomResourceDefinition objects
 	Items []CustomResourceDefinitionType `pulumi:"items"`
 	// Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
-	Kind *string `pulumi:"kind"`
-	// Standard object's metadata More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata
+	Kind     *string          `pulumi:"kind"`
 	Metadata *metav1.ListMeta `pulumi:"metadata"`
 }
 
@@ -634,8 +630,7 @@ type CustomResourceDefinitionListTypeArgs struct {
 	// items list individual CustomResourceDefinition objects
 	Items CustomResourceDefinitionTypeArrayInput `pulumi:"items"`
 	// Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
-	Kind pulumi.StringPtrInput `pulumi:"kind"`
-	// Standard object's metadata More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata
+	Kind     pulumi.StringPtrInput   `pulumi:"kind"`
 	Metadata metav1.ListMetaPtrInput `pulumi:"metadata"`
 }
 
@@ -681,7 +676,6 @@ func (o CustomResourceDefinitionListTypeOutput) Kind() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v CustomResourceDefinitionListType) *string { return v.Kind }).(pulumi.StringPtrOutput)
 }
 
-// Standard object's metadata More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata
 func (o CustomResourceDefinitionListTypeOutput) Metadata() metav1.ListMetaPtrOutput {
 	return o.ApplyT(func(v CustomResourceDefinitionListType) *metav1.ListMeta { return v.Metadata }).(metav1.ListMetaPtrOutput)
 }
@@ -1398,10 +1392,6 @@ func (o CustomResourceDefinitionStatusPtrOutput) StoredVersions() pulumi.StringA
 type CustomResourceDefinitionVersion struct {
 	// additionalPrinterColumns specifies additional columns returned in Table output. See https://kubernetes.io/docs/reference/using-api/api-concepts/#receiving-resources-as-tables for details. Top-level and per-version columns are mutually exclusive. Per-version columns must not all be set to identical values (top-level columns should be used instead). If no top-level or per-version columns are specified, a single column displaying the age of the custom resource is used.
 	AdditionalPrinterColumns []CustomResourceColumnDefinition `pulumi:"additionalPrinterColumns"`
-	// deprecated indicates this version of the custom resource API is deprecated. When set to true, API requests to this version receive a warning header in the server response. Defaults to false.
-	Deprecated *bool `pulumi:"deprecated"`
-	// deprecationWarning overrides the default warning returned to API clients. May only be set when `deprecated` is true. The default warning indicates this version is deprecated and recommends use of the newest served version of equal or greater stability, if one exists.
-	DeprecationWarning *string `pulumi:"deprecationWarning"`
 	// name is the version name, e.g. “v1”, “v2beta1”, etc. The custom resources are served under this version at `/apis/<group>/<version>/...` if `served` is true.
 	Name string `pulumi:"name"`
 	// schema describes the schema used for validation and pruning of this version of the custom resource. Top-level and per-version schemas are mutually exclusive. Per-version schemas must not all be set to identical values (top-level validation schema should be used instead).
@@ -1429,10 +1419,6 @@ type CustomResourceDefinitionVersionInput interface {
 type CustomResourceDefinitionVersionArgs struct {
 	// additionalPrinterColumns specifies additional columns returned in Table output. See https://kubernetes.io/docs/reference/using-api/api-concepts/#receiving-resources-as-tables for details. Top-level and per-version columns are mutually exclusive. Per-version columns must not all be set to identical values (top-level columns should be used instead). If no top-level or per-version columns are specified, a single column displaying the age of the custom resource is used.
 	AdditionalPrinterColumns CustomResourceColumnDefinitionArrayInput `pulumi:"additionalPrinterColumns"`
-	// deprecated indicates this version of the custom resource API is deprecated. When set to true, API requests to this version receive a warning header in the server response. Defaults to false.
-	Deprecated pulumi.BoolPtrInput `pulumi:"deprecated"`
-	// deprecationWarning overrides the default warning returned to API clients. May only be set when `deprecated` is true. The default warning indicates this version is deprecated and recommends use of the newest served version of equal or greater stability, if one exists.
-	DeprecationWarning pulumi.StringPtrInput `pulumi:"deprecationWarning"`
 	// name is the version name, e.g. “v1”, “v2beta1”, etc. The custom resources are served under this version at `/apis/<group>/<version>/...` if `served` is true.
 	Name pulumi.StringInput `pulumi:"name"`
 	// schema describes the schema used for validation and pruning of this version of the custom resource. Top-level and per-version schemas are mutually exclusive. Per-version schemas must not all be set to identical values (top-level validation schema should be used instead).
@@ -1502,16 +1488,6 @@ func (o CustomResourceDefinitionVersionOutput) AdditionalPrinterColumns() Custom
 	return o.ApplyT(func(v CustomResourceDefinitionVersion) []CustomResourceColumnDefinition {
 		return v.AdditionalPrinterColumns
 	}).(CustomResourceColumnDefinitionArrayOutput)
-}
-
-// deprecated indicates this version of the custom resource API is deprecated. When set to true, API requests to this version receive a warning header in the server response. Defaults to false.
-func (o CustomResourceDefinitionVersionOutput) Deprecated() pulumi.BoolPtrOutput {
-	return o.ApplyT(func(v CustomResourceDefinitionVersion) *bool { return v.Deprecated }).(pulumi.BoolPtrOutput)
-}
-
-// deprecationWarning overrides the default warning returned to API clients. May only be set when `deprecated` is true. The default warning indicates this version is deprecated and recommends use of the newest served version of equal or greater stability, if one exists.
-func (o CustomResourceDefinitionVersionOutput) DeprecationWarning() pulumi.StringPtrOutput {
-	return o.ApplyT(func(v CustomResourceDefinitionVersion) *string { return v.DeprecationWarning }).(pulumi.StringPtrOutput)
 }
 
 // name is the version name, e.g. “v1”, “v2beta1”, etc. The custom resources are served under this version at `/apis/<group>/<version>/...` if `served` is true.
@@ -2221,8 +2197,6 @@ type JSONSchemaProps struct {
 	// x-kubernetes-list-map-keys annotates an array with the x-kubernetes-list-type `map` by specifying the keys used as the index of the map.
 	//
 	// This tag MUST only be used on lists that have the "x-kubernetes-list-type" extension set to "map". Also, the values specified for this attribute must be a scalar typed field of the child structure (no nesting is supported).
-	//
-	// The properties specified must either be required or have a default value, to ensure those properties are present for all list items.
 	X_kubernetes_list_map_keys []string `pulumi:"x_kubernetes_list_map_keys"`
 	// x-kubernetes-list-type annotates an array to further describe its topology. This extension must only be used on lists and may have 3 possible values:
 	//
@@ -2322,8 +2296,6 @@ type JSONSchemaPropsArgs struct {
 	// x-kubernetes-list-map-keys annotates an array with the x-kubernetes-list-type `map` by specifying the keys used as the index of the map.
 	//
 	// This tag MUST only be used on lists that have the "x-kubernetes-list-type" extension set to "map". Also, the values specified for this attribute must be a scalar typed field of the child structure (no nesting is supported).
-	//
-	// The properties specified must either be required or have a default value, to ensure those properties are present for all list items.
 	X_kubernetes_list_map_keys pulumi.StringArrayInput `pulumi:"x_kubernetes_list_map_keys"`
 	// x-kubernetes-list-type annotates an array to further describe its topology. This extension must only be used on lists and may have 3 possible values:
 	//
@@ -2654,8 +2626,6 @@ func (o JSONSchemaPropsOutput) X_kubernetes_int_or_string() pulumi.BoolPtrOutput
 // x-kubernetes-list-map-keys annotates an array with the x-kubernetes-list-type `map` by specifying the keys used as the index of the map.
 //
 // This tag MUST only be used on lists that have the "x-kubernetes-list-type" extension set to "map". Also, the values specified for this attribute must be a scalar typed field of the child structure (no nesting is supported).
-//
-// The properties specified must either be required or have a default value, to ensure those properties are present for all list items.
 func (o JSONSchemaPropsOutput) X_kubernetes_list_map_keys() pulumi.StringArrayOutput {
 	return o.ApplyT(func(v JSONSchemaProps) []string { return v.X_kubernetes_list_map_keys }).(pulumi.StringArrayOutput)
 }
@@ -3082,8 +3052,6 @@ func (o JSONSchemaPropsPtrOutput) X_kubernetes_int_or_string() pulumi.BoolPtrOut
 // x-kubernetes-list-map-keys annotates an array with the x-kubernetes-list-type `map` by specifying the keys used as the index of the map.
 //
 // This tag MUST only be used on lists that have the "x-kubernetes-list-type" extension set to "map". Also, the values specified for this attribute must be a scalar typed field of the child structure (no nesting is supported).
-//
-// The properties specified must either be required or have a default value, to ensure those properties are present for all list items.
 func (o JSONSchemaPropsPtrOutput) X_kubernetes_list_map_keys() pulumi.StringArrayOutput {
 	return o.ApplyT(func(v *JSONSchemaProps) []string {
 		if v == nil {

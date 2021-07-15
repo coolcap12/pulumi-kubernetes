@@ -350,6 +350,10 @@ export abstract class CollectionComponentResource extends pulumi.ComponentResour
     public getResource(groupVersionKind: "networking.k8s.io/v1/NetworkPolicyList", namespace: string, name: string): pulumi.Output<networking.v1.NetworkPolicyList>;
     public getResource(groupVersionKind: "networking.k8s.io/v1beta1/Ingress", name: string): pulumi.Output<networking.v1beta1.Ingress>;
     public getResource(groupVersionKind: "networking.k8s.io/v1beta1/Ingress", namespace: string, name: string): pulumi.Output<networking.v1beta1.Ingress>;
+    public getResource(groupVersionKind: "networking.k8s.io/v1beta1/IngressClass", name: string): pulumi.Output<networking.v1beta1.IngressClass>;
+    public getResource(groupVersionKind: "networking.k8s.io/v1beta1/IngressClass", namespace: string, name: string): pulumi.Output<networking.v1beta1.IngressClass>;
+    public getResource(groupVersionKind: "networking.k8s.io/v1beta1/IngressClassList", name: string): pulumi.Output<networking.v1beta1.IngressClassList>;
+    public getResource(groupVersionKind: "networking.k8s.io/v1beta1/IngressClassList", namespace: string, name: string): pulumi.Output<networking.v1beta1.IngressClassList>;
     public getResource(groupVersionKind: "networking.k8s.io/v1beta1/IngressList", name: string): pulumi.Output<networking.v1beta1.IngressList>;
     public getResource(groupVersionKind: "networking.k8s.io/v1beta1/IngressList", namespace: string, name: string): pulumi.Output<networking.v1beta1.IngressList>;
     public getResource(groupVersionKind: "node.k8s.io/v1/RuntimeClass", name: string): pulumi.Output<node.v1.RuntimeClass>;
@@ -1864,6 +1868,22 @@ export abstract class CollectionComponentResource extends pulumi.ComponentResour
     public getResourceProperty(groupVersionKind: "networking.k8s.io/v1beta1/Ingress", namespace: string, name: string, property: "spec"): pulumi.Output<outputs.networking.v1beta1.IngressSpec>;
     public getResourceProperty(groupVersionKind: "networking.k8s.io/v1beta1/Ingress", name: string, property: "status"): pulumi.Output<outputs.networking.v1beta1.IngressStatus>;
     public getResourceProperty(groupVersionKind: "networking.k8s.io/v1beta1/Ingress", namespace: string, name: string, property: "status"): pulumi.Output<outputs.networking.v1beta1.IngressStatus>;
+    public getResourceProperty(groupVersionKind: "networking.k8s.io/v1beta1/IngressClass", name: string, property: "apiVersion"): pulumi.Output<"networking.k8s.io/v1beta1">;
+    public getResourceProperty(groupVersionKind: "networking.k8s.io/v1beta1/IngressClass", namespace: string, name: string, property: "apiVersion"): pulumi.Output<"networking.k8s.io/v1beta1">;
+    public getResourceProperty(groupVersionKind: "networking.k8s.io/v1beta1/IngressClass", name: string, property: "kind"): pulumi.Output<"IngressClass">;
+    public getResourceProperty(groupVersionKind: "networking.k8s.io/v1beta1/IngressClass", namespace: string, name: string, property: "kind"): pulumi.Output<"IngressClass">;
+    public getResourceProperty(groupVersionKind: "networking.k8s.io/v1beta1/IngressClass", name: string, property: "metadata"): pulumi.Output<outputs.meta.v1.ObjectMeta>;
+    public getResourceProperty(groupVersionKind: "networking.k8s.io/v1beta1/IngressClass", namespace: string, name: string, property: "metadata"): pulumi.Output<outputs.meta.v1.ObjectMeta>;
+    public getResourceProperty(groupVersionKind: "networking.k8s.io/v1beta1/IngressClass", name: string, property: "spec"): pulumi.Output<outputs.networking.v1beta1.IngressClassSpec>;
+    public getResourceProperty(groupVersionKind: "networking.k8s.io/v1beta1/IngressClass", namespace: string, name: string, property: "spec"): pulumi.Output<outputs.networking.v1beta1.IngressClassSpec>;
+    public getResourceProperty(groupVersionKind: "networking.k8s.io/v1beta1/IngressClassList", name: string, property: "apiVersion"): pulumi.Output<"networking.k8s.io/v1beta1">;
+    public getResourceProperty(groupVersionKind: "networking.k8s.io/v1beta1/IngressClassList", namespace: string, name: string, property: "apiVersion"): pulumi.Output<"networking.k8s.io/v1beta1">;
+    public getResourceProperty(groupVersionKind: "networking.k8s.io/v1beta1/IngressClassList", name: string, property: "items"): pulumi.Output<outputs.networking.v1beta1.IngressClass[]>;
+    public getResourceProperty(groupVersionKind: "networking.k8s.io/v1beta1/IngressClassList", namespace: string, name: string, property: "items"): pulumi.Output<outputs.networking.v1beta1.IngressClass[]>;
+    public getResourceProperty(groupVersionKind: "networking.k8s.io/v1beta1/IngressClassList", name: string, property: "kind"): pulumi.Output<"IngressClassList">;
+    public getResourceProperty(groupVersionKind: "networking.k8s.io/v1beta1/IngressClassList", namespace: string, name: string, property: "kind"): pulumi.Output<"IngressClassList">;
+    public getResourceProperty(groupVersionKind: "networking.k8s.io/v1beta1/IngressClassList", name: string, property: "metadata"): pulumi.Output<outputs.meta.v1.ListMeta>;
+    public getResourceProperty(groupVersionKind: "networking.k8s.io/v1beta1/IngressClassList", namespace: string, name: string, property: "metadata"): pulumi.Output<outputs.meta.v1.ListMeta>;
     public getResourceProperty(groupVersionKind: "networking.k8s.io/v1beta1/IngressList", name: string, property: "apiVersion"): pulumi.Output<"networking.k8s.io/v1beta1">;
     public getResourceProperty(groupVersionKind: "networking.k8s.io/v1beta1/IngressList", namespace: string, name: string, property: "apiVersion"): pulumi.Output<"networking.k8s.io/v1beta1">;
     public getResourceProperty(groupVersionKind: "networking.k8s.io/v1beta1/IngressList", name: string, property: "items"): pulumi.Output<outputs.networking.v1beta1.Ingress[]>;
@@ -3012,6 +3032,7 @@ export interface ConfigOpts {
         || (gvk === "networking.k8s.io/v1/IngressClassList")
         || (gvk === "networking.k8s.io/v1/IngressList")
         || (gvk === "networking.k8s.io/v1/NetworkPolicyList")
+        || (gvk === "networking.k8s.io/v1beta1/IngressClassList")
         || (gvk === "networking.k8s.io/v1beta1/IngressList")
         || (gvk === "node.k8s.io/v1/RuntimeClassList")
         || (gvk === "node.k8s.io/v1alpha1/RuntimeClassList")
@@ -3463,6 +3484,11 @@ export interface ConfigOpts {
             return [id.apply(id => ({
                 name: `networking.k8s.io/v1beta1/Ingress::${id}`,
                 resource: new networking.v1beta1.Ingress(id, obj, opts),
+            }))];
+        case "networking.k8s.io/v1beta1/IngressClass":
+            return [id.apply(id => ({
+                name: `networking.k8s.io/v1beta1/IngressClass::${id}`,
+                resource: new networking.v1beta1.IngressClass(id, obj, opts),
             }))];
         case "node.k8s.io/v1/RuntimeClass":
             return [id.apply(id => ({

@@ -243,8 +243,6 @@ type CSIDriverSpec struct {
 	// RequiresRepublish indicates the CSI driver wants `NodePublishVolume` being periodically called to reflect any possible change in the mounted volume. This field defaults to false.
 	//
 	// Note: After a successful initial NodePublishVolume call, subsequent calls to NodePublishVolume should only update the contents of the volume. New mount points will not be seen by a running container.
-	//
-	// This is a beta feature and only available when the CSIServiceAccountToken feature is enabled.
 	RequiresRepublish *bool `pulumi:"requiresRepublish"`
 	// If set to true, storageCapacity indicates that the CSI volume driver wants pod scheduling to consider the storage capacity that the driver deployment will report by creating CSIStorageCapacity objects with capacity information.
 	//
@@ -265,8 +263,6 @@ type CSIDriverSpec struct {
 	// }
 	//
 	// Note: Audience in each TokenRequest should be different and at most one token is empty string. To receive a new token after expiry, RequiresRepublish can be used to trigger NodePublishVolume periodically.
-	//
-	// This is a beta feature and only available when the CSIServiceAccountToken feature is enabled.
 	TokenRequests []TokenRequest `pulumi:"tokenRequests"`
 	// volumeLifecycleModes defines what kind of volumes this CSI volume driver supports. The default if the list is empty is "Persistent", which is the usage defined by the CSI specification and implemented in Kubernetes via the usual PV/PVC mechanism. The other mode is "Ephemeral". In this mode, volumes are defined inline inside the pod spec with CSIVolumeSource and their lifecycle is tied to the lifecycle of that pod. A driver has to be aware of this because it is only going to get a NodePublishVolume call for such a volume. For more information about implementing this mode, see https://kubernetes-csi.github.io/docs/ephemeral-local-volumes.html A driver can support one or more of these modes and more modes may be added in the future. This field is beta.
 	//
@@ -307,8 +303,6 @@ type CSIDriverSpecArgs struct {
 	// RequiresRepublish indicates the CSI driver wants `NodePublishVolume` being periodically called to reflect any possible change in the mounted volume. This field defaults to false.
 	//
 	// Note: After a successful initial NodePublishVolume call, subsequent calls to NodePublishVolume should only update the contents of the volume. New mount points will not be seen by a running container.
-	//
-	// This is a beta feature and only available when the CSIServiceAccountToken feature is enabled.
 	RequiresRepublish pulumi.BoolPtrInput `pulumi:"requiresRepublish"`
 	// If set to true, storageCapacity indicates that the CSI volume driver wants pod scheduling to consider the storage capacity that the driver deployment will report by creating CSIStorageCapacity objects with capacity information.
 	//
@@ -329,8 +323,6 @@ type CSIDriverSpecArgs struct {
 	// }
 	//
 	// Note: Audience in each TokenRequest should be different and at most one token is empty string. To receive a new token after expiry, RequiresRepublish can be used to trigger NodePublishVolume periodically.
-	//
-	// This is a beta feature and only available when the CSIServiceAccountToken feature is enabled.
 	TokenRequests TokenRequestArrayInput `pulumi:"tokenRequests"`
 	// volumeLifecycleModes defines what kind of volumes this CSI volume driver supports. The default if the list is empty is "Persistent", which is the usage defined by the CSI specification and implemented in Kubernetes via the usual PV/PVC mechanism. The other mode is "Ephemeral". In this mode, volumes are defined inline inside the pod spec with CSIVolumeSource and their lifecycle is tied to the lifecycle of that pod. A driver has to be aware of this because it is only going to get a NodePublishVolume call for such a volume. For more information about implementing this mode, see https://kubernetes-csi.github.io/docs/ephemeral-local-volumes.html A driver can support one or more of these modes and more modes may be added in the future. This field is beta.
 	//
@@ -445,8 +437,6 @@ func (o CSIDriverSpecOutput) PodInfoOnMount() pulumi.BoolPtrOutput {
 // RequiresRepublish indicates the CSI driver wants `NodePublishVolume` being periodically called to reflect any possible change in the mounted volume. This field defaults to false.
 //
 // Note: After a successful initial NodePublishVolume call, subsequent calls to NodePublishVolume should only update the contents of the volume. New mount points will not be seen by a running container.
-//
-// This is a beta feature and only available when the CSIServiceAccountToken feature is enabled.
 func (o CSIDriverSpecOutput) RequiresRepublish() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v CSIDriverSpec) *bool { return v.RequiresRepublish }).(pulumi.BoolPtrOutput)
 }
@@ -473,8 +463,6 @@ func (o CSIDriverSpecOutput) StorageCapacity() pulumi.BoolPtrOutput {
 // }
 //
 // Note: Audience in each TokenRequest should be different and at most one token is empty string. To receive a new token after expiry, RequiresRepublish can be used to trigger NodePublishVolume periodically.
-//
-// This is a beta feature and only available when the CSIServiceAccountToken feature is enabled.
 func (o CSIDriverSpecOutput) TokenRequests() TokenRequestArrayOutput {
 	return o.ApplyT(func(v CSIDriverSpec) []TokenRequest { return v.TokenRequests }).(TokenRequestArrayOutput)
 }
@@ -548,8 +536,6 @@ func (o CSIDriverSpecPtrOutput) PodInfoOnMount() pulumi.BoolPtrOutput {
 // RequiresRepublish indicates the CSI driver wants `NodePublishVolume` being periodically called to reflect any possible change in the mounted volume. This field defaults to false.
 //
 // Note: After a successful initial NodePublishVolume call, subsequent calls to NodePublishVolume should only update the contents of the volume. New mount points will not be seen by a running container.
-//
-// This is a beta feature and only available when the CSIServiceAccountToken feature is enabled.
 func (o CSIDriverSpecPtrOutput) RequiresRepublish() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v *CSIDriverSpec) *bool {
 		if v == nil {
@@ -586,8 +572,6 @@ func (o CSIDriverSpecPtrOutput) StorageCapacity() pulumi.BoolPtrOutput {
 // }
 //
 // Note: Audience in each TokenRequest should be different and at most one token is empty string. To receive a new token after expiry, RequiresRepublish can be used to trigger NodePublishVolume periodically.
-//
-// This is a beta feature and only available when the CSIServiceAccountToken feature is enabled.
 func (o CSIDriverSpecPtrOutput) TokenRequests() TokenRequestArrayOutput {
 	return o.ApplyT(func(v *CSIDriverSpec) []TokenRequest {
 		if v == nil {

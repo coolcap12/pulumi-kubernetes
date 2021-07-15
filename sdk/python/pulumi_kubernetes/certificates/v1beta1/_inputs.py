@@ -176,6 +176,7 @@ class CertificateSigningRequestSpecArgs:
                  request: pulumi.Input[str],
                  extra: Optional[pulumi.Input[Mapping[str, pulumi.Input[Sequence[pulumi.Input[str]]]]]] = None,
                  groups: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
+                 signer_name: Optional[pulumi.Input[str]] = None,
                  uid: Optional[pulumi.Input[str]] = None,
                  usages: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
                  username: Optional[pulumi.Input[str]] = None):
@@ -184,6 +185,13 @@ class CertificateSigningRequestSpecArgs:
         :param pulumi.Input[str] request: Base64-encoded PKCS#10 CSR data
         :param pulumi.Input[Mapping[str, pulumi.Input[Sequence[pulumi.Input[str]]]]] extra: Extra information about the requesting user. See user.Info interface for details.
         :param pulumi.Input[Sequence[pulumi.Input[str]]] groups: Group information about the requesting user. See user.Info interface for details.
+        :param pulumi.Input[str] signer_name: Requested signer for the request. It is a qualified name in the form: `scope-hostname.io/name`. If empty, it will be defaulted:
+                1. If it's a kubelet client certificate, it is assigned
+                   "kubernetes.io/kube-apiserver-client-kubelet".
+                2. If it's a kubelet serving certificate, it is assigned
+                   "kubernetes.io/kubelet-serving".
+                3. Otherwise, it is assigned "kubernetes.io/legacy-unknown".
+               Distribution of trust for signers happens out of band. You can select on this field using `spec.signerName`.
         :param pulumi.Input[str] uid: UID information about the requesting user. See user.Info interface for details.
         :param pulumi.Input[Sequence[pulumi.Input[str]]] usages: allowedUsages specifies a set of usage contexts the key will be valid for. See: https://tools.ietf.org/html/rfc5280#section-4.2.1.3
                     https://tools.ietf.org/html/rfc5280#section-4.2.1.12
@@ -194,6 +202,8 @@ class CertificateSigningRequestSpecArgs:
             pulumi.set(__self__, "extra", extra)
         if groups is not None:
             pulumi.set(__self__, "groups", groups)
+        if signer_name is not None:
+            pulumi.set(__self__, "signer_name", signer_name)
         if uid is not None:
             pulumi.set(__self__, "uid", uid)
         if usages is not None:
@@ -236,6 +246,24 @@ class CertificateSigningRequestSpecArgs:
     @groups.setter
     def groups(self, value: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]):
         pulumi.set(self, "groups", value)
+
+    @property
+    @pulumi.getter(name="signerName")
+    def signer_name(self) -> Optional[pulumi.Input[str]]:
+        """
+        Requested signer for the request. It is a qualified name in the form: `scope-hostname.io/name`. If empty, it will be defaulted:
+         1. If it's a kubelet client certificate, it is assigned
+            "kubernetes.io/kube-apiserver-client-kubelet".
+         2. If it's a kubelet serving certificate, it is assigned
+            "kubernetes.io/kubelet-serving".
+         3. Otherwise, it is assigned "kubernetes.io/legacy-unknown".
+        Distribution of trust for signers happens out of band. You can select on this field using `spec.signerName`.
+        """
+        return pulumi.get(self, "signer_name")
+
+    @signer_name.setter
+    def signer_name(self, value: Optional[pulumi.Input[str]]):
+        pulumi.set(self, "signer_name", value)
 
     @property
     @pulumi.getter

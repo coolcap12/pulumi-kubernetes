@@ -26,6 +26,16 @@ namespace Pulumi.Kubernetes.Types.Outputs.Certificates.V1Beta1
         /// </summary>
         public readonly string Request;
         /// <summary>
+        /// Requested signer for the request. It is a qualified name in the form: `scope-hostname.io/name`. If empty, it will be defaulted:
+        ///  1. If it's a kubelet client certificate, it is assigned
+        ///     "kubernetes.io/kube-apiserver-client-kubelet".
+        ///  2. If it's a kubelet serving certificate, it is assigned
+        ///     "kubernetes.io/kubelet-serving".
+        ///  3. Otherwise, it is assigned "kubernetes.io/legacy-unknown".
+        /// Distribution of trust for signers happens out of band. You can select on this field using `spec.signerName`.
+        /// </summary>
+        public readonly string SignerName;
+        /// <summary>
         /// UID information about the requesting user. See user.Info interface for details.
         /// </summary>
         public readonly string Uid;
@@ -47,6 +57,8 @@ namespace Pulumi.Kubernetes.Types.Outputs.Certificates.V1Beta1
 
             string request,
 
+            string signerName,
+
             string uid,
 
             ImmutableArray<string> usages,
@@ -56,6 +68,7 @@ namespace Pulumi.Kubernetes.Types.Outputs.Certificates.V1Beta1
             Extra = extra;
             Groups = groups;
             Request = request;
+            SignerName = signerName;
             Uid = uid;
             Usages = usages;
             Username = username;

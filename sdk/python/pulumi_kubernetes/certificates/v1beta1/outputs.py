@@ -177,10 +177,28 @@ class CertificateSigningRequestSpec(dict):
     """
     This information is immutable after the request is created. Only the Request and Usages fields can be set on creation, other fields are derived by Kubernetes and cannot be modified by users.
     """
+    @staticmethod
+    def __key_warning(key: str):
+        suggest = None
+        if key == "signerName":
+            suggest = "signer_name"
+
+        if suggest:
+            pulumi.log.warn(f"Key '{key}' not found in CertificateSigningRequestSpec. Access the value via the '{suggest}' property getter instead.")
+
+    def __getitem__(self, key: str) -> Any:
+        CertificateSigningRequestSpec.__key_warning(key)
+        return super().__getitem__(key)
+
+    def get(self, key: str, default = None) -> Any:
+        CertificateSigningRequestSpec.__key_warning(key)
+        return super().get(key, default)
+
     def __init__(__self__, *,
                  request: str,
                  extra: Optional[Mapping[str, Sequence[str]]] = None,
                  groups: Optional[Sequence[str]] = None,
+                 signer_name: Optional[str] = None,
                  uid: Optional[str] = None,
                  usages: Optional[Sequence[str]] = None,
                  username: Optional[str] = None):
@@ -189,6 +207,13 @@ class CertificateSigningRequestSpec(dict):
         :param str request: Base64-encoded PKCS#10 CSR data
         :param Mapping[str, Sequence[str]] extra: Extra information about the requesting user. See user.Info interface for details.
         :param Sequence[str] groups: Group information about the requesting user. See user.Info interface for details.
+        :param str signer_name: Requested signer for the request. It is a qualified name in the form: `scope-hostname.io/name`. If empty, it will be defaulted:
+                1. If it's a kubelet client certificate, it is assigned
+                   "kubernetes.io/kube-apiserver-client-kubelet".
+                2. If it's a kubelet serving certificate, it is assigned
+                   "kubernetes.io/kubelet-serving".
+                3. Otherwise, it is assigned "kubernetes.io/legacy-unknown".
+               Distribution of trust for signers happens out of band. You can select on this field using `spec.signerName`.
         :param str uid: UID information about the requesting user. See user.Info interface for details.
         :param Sequence[str] usages: allowedUsages specifies a set of usage contexts the key will be valid for. See: https://tools.ietf.org/html/rfc5280#section-4.2.1.3
                     https://tools.ietf.org/html/rfc5280#section-4.2.1.12
@@ -199,6 +224,8 @@ class CertificateSigningRequestSpec(dict):
             pulumi.set(__self__, "extra", extra)
         if groups is not None:
             pulumi.set(__self__, "groups", groups)
+        if signer_name is not None:
+            pulumi.set(__self__, "signer_name", signer_name)
         if uid is not None:
             pulumi.set(__self__, "uid", uid)
         if usages is not None:
@@ -229,6 +256,20 @@ class CertificateSigningRequestSpec(dict):
         Group information about the requesting user. See user.Info interface for details.
         """
         return pulumi.get(self, "groups")
+
+    @property
+    @pulumi.getter(name="signerName")
+    def signer_name(self) -> Optional[str]:
+        """
+        Requested signer for the request. It is a qualified name in the form: `scope-hostname.io/name`. If empty, it will be defaulted:
+         1. If it's a kubelet client certificate, it is assigned
+            "kubernetes.io/kube-apiserver-client-kubelet".
+         2. If it's a kubelet serving certificate, it is assigned
+            "kubernetes.io/kubelet-serving".
+         3. Otherwise, it is assigned "kubernetes.io/legacy-unknown".
+        Distribution of trust for signers happens out of band. You can select on this field using `spec.signerName`.
+        """
+        return pulumi.get(self, "signer_name")
 
     @property
     @pulumi.getter

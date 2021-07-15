@@ -194,11 +194,10 @@ class CustomResourceDefinitionArgs:
                  metadata: Optional[pulumi.Input['_meta.v1.ObjectMetaArgs']] = None,
                  status: Optional[pulumi.Input['CustomResourceDefinitionStatusArgs']] = None):
         """
-        CustomResourceDefinition represents a resource that should be exposed on the API server.  Its name MUST be in the format <.spec.name>.<.spec.group>. Deprecated in v1.16, planned for removal in v1.22. Use apiextensions.k8s.io/v1 CustomResourceDefinition instead.
+        CustomResourceDefinition represents a resource that should be exposed on the API server.  Its name MUST be in the format <.spec.name>.<.spec.group>. Deprecated in v1.16, planned for removal in v1.19. Use apiextensions.k8s.io/v1 CustomResourceDefinition instead.
         :param pulumi.Input['CustomResourceDefinitionSpecArgs'] spec: spec describes how the user wants the resources to appear
         :param pulumi.Input[str] api_version: APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
         :param pulumi.Input[str] kind: Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
-        :param pulumi.Input['_meta.v1.ObjectMetaArgs'] metadata: Standard object's metadata More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata
         :param pulumi.Input['CustomResourceDefinitionStatusArgs'] status: status indicates the actual state of the CustomResourceDefinition
         """
         pulumi.set(__self__, "spec", spec)
@@ -250,9 +249,6 @@ class CustomResourceDefinitionArgs:
     @property
     @pulumi.getter
     def metadata(self) -> Optional[pulumi.Input['_meta.v1.ObjectMetaArgs']]:
-        """
-        Standard object's metadata More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata
-        """
         return pulumi.get(self, "metadata")
 
     @metadata.setter
@@ -686,8 +682,6 @@ class CustomResourceDefinitionVersionArgs:
                  served: pulumi.Input[bool],
                  storage: pulumi.Input[bool],
                  additional_printer_columns: Optional[pulumi.Input[Sequence[pulumi.Input['CustomResourceColumnDefinitionArgs']]]] = None,
-                 deprecated: Optional[pulumi.Input[bool]] = None,
-                 deprecation_warning: Optional[pulumi.Input[str]] = None,
                  schema: Optional[pulumi.Input['CustomResourceValidationArgs']] = None,
                  subresources: Optional[pulumi.Input['CustomResourceSubresourcesArgs']] = None):
         """
@@ -696,8 +690,6 @@ class CustomResourceDefinitionVersionArgs:
         :param pulumi.Input[bool] served: served is a flag enabling/disabling this version from being served via REST APIs
         :param pulumi.Input[bool] storage: storage indicates this version should be used when persisting custom resources to storage. There must be exactly one version with storage=true.
         :param pulumi.Input[Sequence[pulumi.Input['CustomResourceColumnDefinitionArgs']]] additional_printer_columns: additionalPrinterColumns specifies additional columns returned in Table output. See https://kubernetes.io/docs/reference/using-api/api-concepts/#receiving-resources-as-tables for details. Top-level and per-version columns are mutually exclusive. Per-version columns must not all be set to identical values (top-level columns should be used instead). If no top-level or per-version columns are specified, a single column displaying the age of the custom resource is used.
-        :param pulumi.Input[bool] deprecated: deprecated indicates this version of the custom resource API is deprecated. When set to true, API requests to this version receive a warning header in the server response. Defaults to false.
-        :param pulumi.Input[str] deprecation_warning: deprecationWarning overrides the default warning returned to API clients. May only be set when `deprecated` is true. The default warning indicates this version is deprecated and recommends use of the newest served version of equal or greater stability, if one exists.
         :param pulumi.Input['CustomResourceValidationArgs'] schema: schema describes the schema used for validation and pruning of this version of the custom resource. Top-level and per-version schemas are mutually exclusive. Per-version schemas must not all be set to identical values (top-level validation schema should be used instead).
         :param pulumi.Input['CustomResourceSubresourcesArgs'] subresources: subresources specify what subresources this version of the defined custom resource have. Top-level and per-version subresources are mutually exclusive. Per-version subresources must not all be set to identical values (top-level subresources should be used instead).
         """
@@ -706,10 +698,6 @@ class CustomResourceDefinitionVersionArgs:
         pulumi.set(__self__, "storage", storage)
         if additional_printer_columns is not None:
             pulumi.set(__self__, "additional_printer_columns", additional_printer_columns)
-        if deprecated is not None:
-            pulumi.set(__self__, "deprecated", deprecated)
-        if deprecation_warning is not None:
-            pulumi.set(__self__, "deprecation_warning", deprecation_warning)
         if schema is not None:
             pulumi.set(__self__, "schema", schema)
         if subresources is not None:
@@ -762,30 +750,6 @@ class CustomResourceDefinitionVersionArgs:
     @additional_printer_columns.setter
     def additional_printer_columns(self, value: Optional[pulumi.Input[Sequence[pulumi.Input['CustomResourceColumnDefinitionArgs']]]]):
         pulumi.set(self, "additional_printer_columns", value)
-
-    @property
-    @pulumi.getter
-    def deprecated(self) -> Optional[pulumi.Input[bool]]:
-        """
-        deprecated indicates this version of the custom resource API is deprecated. When set to true, API requests to this version receive a warning header in the server response. Defaults to false.
-        """
-        return pulumi.get(self, "deprecated")
-
-    @deprecated.setter
-    def deprecated(self, value: Optional[pulumi.Input[bool]]):
-        pulumi.set(self, "deprecated", value)
-
-    @property
-    @pulumi.getter(name="deprecationWarning")
-    def deprecation_warning(self) -> Optional[pulumi.Input[str]]:
-        """
-        deprecationWarning overrides the default warning returned to API clients. May only be set when `deprecated` is true. The default warning indicates this version is deprecated and recommends use of the newest served version of equal or greater stability, if one exists.
-        """
-        return pulumi.get(self, "deprecation_warning")
-
-    @deprecation_warning.setter
-    def deprecation_warning(self, value: Optional[pulumi.Input[str]]):
-        pulumi.set(self, "deprecation_warning", value)
 
     @property
     @pulumi.getter
@@ -1028,8 +992,6 @@ class JSONSchemaPropsArgs:
         :param pulumi.Input[Sequence[pulumi.Input[str]]] x_kubernetes_list_map_keys: x-kubernetes-list-map-keys annotates an array with the x-kubernetes-list-type `map` by specifying the keys used as the index of the map.
                
                This tag MUST only be used on lists that have the "x-kubernetes-list-type" extension set to "map". Also, the values specified for this attribute must be a scalar typed field of the child structure (no nesting is supported).
-               
-               The properties specified must either be required or have a default value, to ensure those properties are present for all list items.
         :param pulumi.Input[str] x_kubernetes_list_type: x-kubernetes-list-type annotates an array to further describe its topology. This extension must only be used on lists and may have 3 possible values:
                
                1) `atomic`: the list is treated as a single entity, like a scalar.
@@ -1522,8 +1484,6 @@ class JSONSchemaPropsArgs:
         x-kubernetes-list-map-keys annotates an array with the x-kubernetes-list-type `map` by specifying the keys used as the index of the map.
 
         This tag MUST only be used on lists that have the "x-kubernetes-list-type" extension set to "map". Also, the values specified for this attribute must be a scalar typed field of the child structure (no nesting is supported).
-
-        The properties specified must either be required or have a default value, to ensure those properties are present for all list items.
         """
         return pulumi.get(self, "x_kubernetes_list_map_keys")
 
