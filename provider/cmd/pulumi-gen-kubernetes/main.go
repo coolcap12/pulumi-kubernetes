@@ -143,7 +143,7 @@ func generateSchema(swaggerPath string) schema.PackageSpec {
 	// newer specs on top of this spec so that these resources continue to be available in our SDKs.
 	urlFmt := "https://raw.githubusercontent.com/kubernetes/kubernetes/v1.%s.0/api/openapi-spec/swagger.json"
 	filenameFmt := "swagger-v1.%s.0.json"
-	for _, v := range []string{"17", "18", "19"} {
+	for _, v := range []string{"17", "18", "19", "20"} {
 		legacySwaggerPath := filepath.Join(swaggerDir, fmt.Sprintf(filenameFmt, v))
 		err = DownloadFile(legacySwaggerPath, fmt.Sprintf(urlFmt, v))
 		if err != nil {
