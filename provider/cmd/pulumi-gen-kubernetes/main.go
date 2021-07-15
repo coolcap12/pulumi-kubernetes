@@ -50,6 +50,14 @@ import (
 const Swagger117Url = "https://raw.githubusercontent.com/kubernetes/kubernetes/v1.17.0/api/openapi-spec/swagger.json"
 const Swagger117FileName = "swagger-v1.17.0.json"
 
+// This is the URL for the v1.18.0 swagger spec. This is the last version of the spec containing the following
+// deprecated resources:
+// - networking/v1beta1/IngressClass
+// Since these resources will continue to be important to users for the foreseeable future, we will merge in
+// newer specs on top of this spec so that these resources continue to be available in our SDKs.
+const Swagger118Url = "https://raw.githubusercontent.com/kubernetes/kubernetes/v1.18.0/api/openapi-spec/swagger.json"
+const Swagger118FileName = "swagger-v1.18.0.json"
+
 // TemplateDir is the path to the base directory for code generator templates.
 var TemplateDir string
 
@@ -154,10 +162,25 @@ func generateSchema(swaggerPath string) schema.PackageSpec {
 		panic(err)
 	}
 	mergedSwagger := mergeSwaggerSpecs(legacySwagger, swagger)
-	data := mergedSwagger.(map[string]interface{})
+
+	legacySwaggerPath = filepath.Join(swaggerDir, Swagger118FileName)
+	err = DownloadFile(legacySwaggerPath, Swagger118Url)
+	if err != nil {
+		panic(err)
+	}
+	legacySwagger, err = ioutil.ReadFile(legacySwaggerPath)
+	if err != nil {
+		panic(err)
+	}
+	mergedSwagger = mergeSwaggerSpecs(legacySwagger, mergedSwagger)
+	schemaMap := map[string]interface{}{}
+	err = json.Unmarshal(mergedSwagger, &schemaMap)
+	if err != nil {
+		panic(err)
+	}
 
 	// Generate schema
-	return gen.PulumiSchema(data)
+	return gen.PulumiSchema(schemaMap)
 }
 
 func writeNodeJSClient(pkg *schema.Package, outdir, templateDir string) {
