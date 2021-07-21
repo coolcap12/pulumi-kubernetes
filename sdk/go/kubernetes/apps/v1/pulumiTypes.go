@@ -3984,167 +3984,10 @@ func (o StatefulSetListTypeOutput) Metadata() metav1.ListMetaPtrOutput {
 	return o.ApplyT(func(v StatefulSetListType) *metav1.ListMeta { return v.Metadata }).(metav1.ListMetaPtrOutput)
 }
 
-// StatefulSetPersistentVolumeClaimRetentionPolicy describes the policy used for PVCs created from the StatefulSet VolumeClaimTemplates.
-type StatefulSetPersistentVolumeClaimRetentionPolicy struct {
-	// WhenDeleted specifies what happens to PVCs created from StatefulSet VolumeClaimTemplates when the StatefulSet is deleted. The default policy of `Retain` causes PVCs to not be affected by StatefulSet deletion. The `Delete` policy causes those PVCs to be deleted.
-	WhenDeleted *string `pulumi:"whenDeleted"`
-	// WhenScaled specifies what happens to PVCs created from StatefulSet VolumeClaimTemplates when the StatefulSet is scaled down. The default policy of `Retain` causes PVCs to not be affected by a scaledown. The `Delete` policy causes the associated PVCs for any excess pods above the replica count to be deleted.
-	WhenScaled *string `pulumi:"whenScaled"`
-}
-
-// StatefulSetPersistentVolumeClaimRetentionPolicyInput is an input type that accepts StatefulSetPersistentVolumeClaimRetentionPolicyArgs and StatefulSetPersistentVolumeClaimRetentionPolicyOutput values.
-// You can construct a concrete instance of `StatefulSetPersistentVolumeClaimRetentionPolicyInput` via:
-//
-//          StatefulSetPersistentVolumeClaimRetentionPolicyArgs{...}
-type StatefulSetPersistentVolumeClaimRetentionPolicyInput interface {
-	pulumi.Input
-
-	ToStatefulSetPersistentVolumeClaimRetentionPolicyOutput() StatefulSetPersistentVolumeClaimRetentionPolicyOutput
-	ToStatefulSetPersistentVolumeClaimRetentionPolicyOutputWithContext(context.Context) StatefulSetPersistentVolumeClaimRetentionPolicyOutput
-}
-
-// StatefulSetPersistentVolumeClaimRetentionPolicy describes the policy used for PVCs created from the StatefulSet VolumeClaimTemplates.
-type StatefulSetPersistentVolumeClaimRetentionPolicyArgs struct {
-	// WhenDeleted specifies what happens to PVCs created from StatefulSet VolumeClaimTemplates when the StatefulSet is deleted. The default policy of `Retain` causes PVCs to not be affected by StatefulSet deletion. The `Delete` policy causes those PVCs to be deleted.
-	WhenDeleted pulumi.StringPtrInput `pulumi:"whenDeleted"`
-	// WhenScaled specifies what happens to PVCs created from StatefulSet VolumeClaimTemplates when the StatefulSet is scaled down. The default policy of `Retain` causes PVCs to not be affected by a scaledown. The `Delete` policy causes the associated PVCs for any excess pods above the replica count to be deleted.
-	WhenScaled pulumi.StringPtrInput `pulumi:"whenScaled"`
-}
-
-func (StatefulSetPersistentVolumeClaimRetentionPolicyArgs) ElementType() reflect.Type {
-	return reflect.TypeOf((*StatefulSetPersistentVolumeClaimRetentionPolicy)(nil)).Elem()
-}
-
-func (i StatefulSetPersistentVolumeClaimRetentionPolicyArgs) ToStatefulSetPersistentVolumeClaimRetentionPolicyOutput() StatefulSetPersistentVolumeClaimRetentionPolicyOutput {
-	return i.ToStatefulSetPersistentVolumeClaimRetentionPolicyOutputWithContext(context.Background())
-}
-
-func (i StatefulSetPersistentVolumeClaimRetentionPolicyArgs) ToStatefulSetPersistentVolumeClaimRetentionPolicyOutputWithContext(ctx context.Context) StatefulSetPersistentVolumeClaimRetentionPolicyOutput {
-	return pulumi.ToOutputWithContext(ctx, i).(StatefulSetPersistentVolumeClaimRetentionPolicyOutput)
-}
-
-func (i StatefulSetPersistentVolumeClaimRetentionPolicyArgs) ToStatefulSetPersistentVolumeClaimRetentionPolicyPtrOutput() StatefulSetPersistentVolumeClaimRetentionPolicyPtrOutput {
-	return i.ToStatefulSetPersistentVolumeClaimRetentionPolicyPtrOutputWithContext(context.Background())
-}
-
-func (i StatefulSetPersistentVolumeClaimRetentionPolicyArgs) ToStatefulSetPersistentVolumeClaimRetentionPolicyPtrOutputWithContext(ctx context.Context) StatefulSetPersistentVolumeClaimRetentionPolicyPtrOutput {
-	return pulumi.ToOutputWithContext(ctx, i).(StatefulSetPersistentVolumeClaimRetentionPolicyOutput).ToStatefulSetPersistentVolumeClaimRetentionPolicyPtrOutputWithContext(ctx)
-}
-
-// StatefulSetPersistentVolumeClaimRetentionPolicyPtrInput is an input type that accepts StatefulSetPersistentVolumeClaimRetentionPolicyArgs, StatefulSetPersistentVolumeClaimRetentionPolicyPtr and StatefulSetPersistentVolumeClaimRetentionPolicyPtrOutput values.
-// You can construct a concrete instance of `StatefulSetPersistentVolumeClaimRetentionPolicyPtrInput` via:
-//
-//          StatefulSetPersistentVolumeClaimRetentionPolicyArgs{...}
-//
-//  or:
-//
-//          nil
-type StatefulSetPersistentVolumeClaimRetentionPolicyPtrInput interface {
-	pulumi.Input
-
-	ToStatefulSetPersistentVolumeClaimRetentionPolicyPtrOutput() StatefulSetPersistentVolumeClaimRetentionPolicyPtrOutput
-	ToStatefulSetPersistentVolumeClaimRetentionPolicyPtrOutputWithContext(context.Context) StatefulSetPersistentVolumeClaimRetentionPolicyPtrOutput
-}
-
-type statefulSetPersistentVolumeClaimRetentionPolicyPtrType StatefulSetPersistentVolumeClaimRetentionPolicyArgs
-
-func StatefulSetPersistentVolumeClaimRetentionPolicyPtr(v *StatefulSetPersistentVolumeClaimRetentionPolicyArgs) StatefulSetPersistentVolumeClaimRetentionPolicyPtrInput {
-	return (*statefulSetPersistentVolumeClaimRetentionPolicyPtrType)(v)
-}
-
-func (*statefulSetPersistentVolumeClaimRetentionPolicyPtrType) ElementType() reflect.Type {
-	return reflect.TypeOf((**StatefulSetPersistentVolumeClaimRetentionPolicy)(nil)).Elem()
-}
-
-func (i *statefulSetPersistentVolumeClaimRetentionPolicyPtrType) ToStatefulSetPersistentVolumeClaimRetentionPolicyPtrOutput() StatefulSetPersistentVolumeClaimRetentionPolicyPtrOutput {
-	return i.ToStatefulSetPersistentVolumeClaimRetentionPolicyPtrOutputWithContext(context.Background())
-}
-
-func (i *statefulSetPersistentVolumeClaimRetentionPolicyPtrType) ToStatefulSetPersistentVolumeClaimRetentionPolicyPtrOutputWithContext(ctx context.Context) StatefulSetPersistentVolumeClaimRetentionPolicyPtrOutput {
-	return pulumi.ToOutputWithContext(ctx, i).(StatefulSetPersistentVolumeClaimRetentionPolicyPtrOutput)
-}
-
-// StatefulSetPersistentVolumeClaimRetentionPolicy describes the policy used for PVCs created from the StatefulSet VolumeClaimTemplates.
-type StatefulSetPersistentVolumeClaimRetentionPolicyOutput struct{ *pulumi.OutputState }
-
-func (StatefulSetPersistentVolumeClaimRetentionPolicyOutput) ElementType() reflect.Type {
-	return reflect.TypeOf((*StatefulSetPersistentVolumeClaimRetentionPolicy)(nil)).Elem()
-}
-
-func (o StatefulSetPersistentVolumeClaimRetentionPolicyOutput) ToStatefulSetPersistentVolumeClaimRetentionPolicyOutput() StatefulSetPersistentVolumeClaimRetentionPolicyOutput {
-	return o
-}
-
-func (o StatefulSetPersistentVolumeClaimRetentionPolicyOutput) ToStatefulSetPersistentVolumeClaimRetentionPolicyOutputWithContext(ctx context.Context) StatefulSetPersistentVolumeClaimRetentionPolicyOutput {
-	return o
-}
-
-func (o StatefulSetPersistentVolumeClaimRetentionPolicyOutput) ToStatefulSetPersistentVolumeClaimRetentionPolicyPtrOutput() StatefulSetPersistentVolumeClaimRetentionPolicyPtrOutput {
-	return o.ToStatefulSetPersistentVolumeClaimRetentionPolicyPtrOutputWithContext(context.Background())
-}
-
-func (o StatefulSetPersistentVolumeClaimRetentionPolicyOutput) ToStatefulSetPersistentVolumeClaimRetentionPolicyPtrOutputWithContext(ctx context.Context) StatefulSetPersistentVolumeClaimRetentionPolicyPtrOutput {
-	return o.ApplyT(func(v StatefulSetPersistentVolumeClaimRetentionPolicy) *StatefulSetPersistentVolumeClaimRetentionPolicy {
-		return &v
-	}).(StatefulSetPersistentVolumeClaimRetentionPolicyPtrOutput)
-}
-
-// WhenDeleted specifies what happens to PVCs created from StatefulSet VolumeClaimTemplates when the StatefulSet is deleted. The default policy of `Retain` causes PVCs to not be affected by StatefulSet deletion. The `Delete` policy causes those PVCs to be deleted.
-func (o StatefulSetPersistentVolumeClaimRetentionPolicyOutput) WhenDeleted() pulumi.StringPtrOutput {
-	return o.ApplyT(func(v StatefulSetPersistentVolumeClaimRetentionPolicy) *string { return v.WhenDeleted }).(pulumi.StringPtrOutput)
-}
-
-// WhenScaled specifies what happens to PVCs created from StatefulSet VolumeClaimTemplates when the StatefulSet is scaled down. The default policy of `Retain` causes PVCs to not be affected by a scaledown. The `Delete` policy causes the associated PVCs for any excess pods above the replica count to be deleted.
-func (o StatefulSetPersistentVolumeClaimRetentionPolicyOutput) WhenScaled() pulumi.StringPtrOutput {
-	return o.ApplyT(func(v StatefulSetPersistentVolumeClaimRetentionPolicy) *string { return v.WhenScaled }).(pulumi.StringPtrOutput)
-}
-
-type StatefulSetPersistentVolumeClaimRetentionPolicyPtrOutput struct{ *pulumi.OutputState }
-
-func (StatefulSetPersistentVolumeClaimRetentionPolicyPtrOutput) ElementType() reflect.Type {
-	return reflect.TypeOf((**StatefulSetPersistentVolumeClaimRetentionPolicy)(nil)).Elem()
-}
-
-func (o StatefulSetPersistentVolumeClaimRetentionPolicyPtrOutput) ToStatefulSetPersistentVolumeClaimRetentionPolicyPtrOutput() StatefulSetPersistentVolumeClaimRetentionPolicyPtrOutput {
-	return o
-}
-
-func (o StatefulSetPersistentVolumeClaimRetentionPolicyPtrOutput) ToStatefulSetPersistentVolumeClaimRetentionPolicyPtrOutputWithContext(ctx context.Context) StatefulSetPersistentVolumeClaimRetentionPolicyPtrOutput {
-	return o
-}
-
-func (o StatefulSetPersistentVolumeClaimRetentionPolicyPtrOutput) Elem() StatefulSetPersistentVolumeClaimRetentionPolicyOutput {
-	return o.ApplyT(func(v *StatefulSetPersistentVolumeClaimRetentionPolicy) StatefulSetPersistentVolumeClaimRetentionPolicy {
-		return *v
-	}).(StatefulSetPersistentVolumeClaimRetentionPolicyOutput)
-}
-
-// WhenDeleted specifies what happens to PVCs created from StatefulSet VolumeClaimTemplates when the StatefulSet is deleted. The default policy of `Retain` causes PVCs to not be affected by StatefulSet deletion. The `Delete` policy causes those PVCs to be deleted.
-func (o StatefulSetPersistentVolumeClaimRetentionPolicyPtrOutput) WhenDeleted() pulumi.StringPtrOutput {
-	return o.ApplyT(func(v *StatefulSetPersistentVolumeClaimRetentionPolicy) *string {
-		if v == nil {
-			return nil
-		}
-		return v.WhenDeleted
-	}).(pulumi.StringPtrOutput)
-}
-
-// WhenScaled specifies what happens to PVCs created from StatefulSet VolumeClaimTemplates when the StatefulSet is scaled down. The default policy of `Retain` causes PVCs to not be affected by a scaledown. The `Delete` policy causes the associated PVCs for any excess pods above the replica count to be deleted.
-func (o StatefulSetPersistentVolumeClaimRetentionPolicyPtrOutput) WhenScaled() pulumi.StringPtrOutput {
-	return o.ApplyT(func(v *StatefulSetPersistentVolumeClaimRetentionPolicy) *string {
-		if v == nil {
-			return nil
-		}
-		return v.WhenScaled
-	}).(pulumi.StringPtrOutput)
-}
-
 // A StatefulSetSpec is the specification of a StatefulSet.
 type StatefulSetSpec struct {
 	// Minimum number of seconds for which a newly created pod should be ready without any of its container crashing for it to be considered available. Defaults to 0 (pod will be considered available as soon as it is ready) This is an alpha field and requires enabling StatefulSetMinReadySeconds feature gate.
 	MinReadySeconds *int `pulumi:"minReadySeconds"`
-	// persistentVolumeClaimRetentionPolicy describes the lifecycle of persistent volume claims created from volumeClaimTemplates. By default, all persistent volume claims are created as needed and retained until manually deleted. This policy allows the lifecycle to be altered, for example by deleting persistent volume claims when their stateful set is deleted, or when their pod is scaled down. This requires the StatefulSetAutoDeletePVC feature gate to be enabled, which is alpha.  +optional
-	PersistentVolumeClaimRetentionPolicy *StatefulSetPersistentVolumeClaimRetentionPolicy `pulumi:"persistentVolumeClaimRetentionPolicy"`
 	// podManagementPolicy controls how pods are created during initial scale up, when replacing pods on nodes, or when scaling down. The default policy is `OrderedReady`, where pods are created in increasing order (pod-0, then pod-1, etc) and the controller will wait until each pod is ready before continuing. When scaling down, the pods are removed in the opposite order. The alternative policy is `Parallel` which will create pods in parallel to match the desired scale without waiting, and on scale down will delete all pods at once.
 	PodManagementPolicy *string `pulumi:"podManagementPolicy"`
 	// replicas is the desired number of replicas of the given Template. These are replicas in the sense that they are instantiations of the same Template, but individual replicas also have a consistent identity. If unspecified, defaults to 1.
@@ -4178,8 +4021,6 @@ type StatefulSetSpecInput interface {
 type StatefulSetSpecArgs struct {
 	// Minimum number of seconds for which a newly created pod should be ready without any of its container crashing for it to be considered available. Defaults to 0 (pod will be considered available as soon as it is ready) This is an alpha field and requires enabling StatefulSetMinReadySeconds feature gate.
 	MinReadySeconds pulumi.IntPtrInput `pulumi:"minReadySeconds"`
-	// persistentVolumeClaimRetentionPolicy describes the lifecycle of persistent volume claims created from volumeClaimTemplates. By default, all persistent volume claims are created as needed and retained until manually deleted. This policy allows the lifecycle to be altered, for example by deleting persistent volume claims when their stateful set is deleted, or when their pod is scaled down. This requires the StatefulSetAutoDeletePVC feature gate to be enabled, which is alpha.  +optional
-	PersistentVolumeClaimRetentionPolicy StatefulSetPersistentVolumeClaimRetentionPolicyPtrInput `pulumi:"persistentVolumeClaimRetentionPolicy"`
 	// podManagementPolicy controls how pods are created during initial scale up, when replacing pods on nodes, or when scaling down. The default policy is `OrderedReady`, where pods are created in increasing order (pod-0, then pod-1, etc) and the controller will wait until each pod is ready before continuing. When scaling down, the pods are removed in the opposite order. The alternative policy is `Parallel` which will create pods in parallel to match the desired scale without waiting, and on scale down will delete all pods at once.
 	PodManagementPolicy pulumi.StringPtrInput `pulumi:"podManagementPolicy"`
 	// replicas is the desired number of replicas of the given Template. These are replicas in the sense that they are instantiations of the same Template, but individual replicas also have a consistent identity. If unspecified, defaults to 1.
@@ -4281,13 +4122,6 @@ func (o StatefulSetSpecOutput) MinReadySeconds() pulumi.IntPtrOutput {
 	return o.ApplyT(func(v StatefulSetSpec) *int { return v.MinReadySeconds }).(pulumi.IntPtrOutput)
 }
 
-// persistentVolumeClaimRetentionPolicy describes the lifecycle of persistent volume claims created from volumeClaimTemplates. By default, all persistent volume claims are created as needed and retained until manually deleted. This policy allows the lifecycle to be altered, for example by deleting persistent volume claims when their stateful set is deleted, or when their pod is scaled down. This requires the StatefulSetAutoDeletePVC feature gate to be enabled, which is alpha.  +optional
-func (o StatefulSetSpecOutput) PersistentVolumeClaimRetentionPolicy() StatefulSetPersistentVolumeClaimRetentionPolicyPtrOutput {
-	return o.ApplyT(func(v StatefulSetSpec) *StatefulSetPersistentVolumeClaimRetentionPolicy {
-		return v.PersistentVolumeClaimRetentionPolicy
-	}).(StatefulSetPersistentVolumeClaimRetentionPolicyPtrOutput)
-}
-
 // podManagementPolicy controls how pods are created during initial scale up, when replacing pods on nodes, or when scaling down. The default policy is `OrderedReady`, where pods are created in increasing order (pod-0, then pod-1, etc) and the controller will wait until each pod is ready before continuing. When scaling down, the pods are removed in the opposite order. The alternative policy is `Parallel` which will create pods in parallel to match the desired scale without waiting, and on scale down will delete all pods at once.
 func (o StatefulSetSpecOutput) PodManagementPolicy() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v StatefulSetSpec) *string { return v.PodManagementPolicy }).(pulumi.StringPtrOutput)
@@ -4354,16 +4188,6 @@ func (o StatefulSetSpecPtrOutput) MinReadySeconds() pulumi.IntPtrOutput {
 		}
 		return v.MinReadySeconds
 	}).(pulumi.IntPtrOutput)
-}
-
-// persistentVolumeClaimRetentionPolicy describes the lifecycle of persistent volume claims created from volumeClaimTemplates. By default, all persistent volume claims are created as needed and retained until manually deleted. This policy allows the lifecycle to be altered, for example by deleting persistent volume claims when their stateful set is deleted, or when their pod is scaled down. This requires the StatefulSetAutoDeletePVC feature gate to be enabled, which is alpha.  +optional
-func (o StatefulSetSpecPtrOutput) PersistentVolumeClaimRetentionPolicy() StatefulSetPersistentVolumeClaimRetentionPolicyPtrOutput {
-	return o.ApplyT(func(v *StatefulSetSpec) *StatefulSetPersistentVolumeClaimRetentionPolicy {
-		if v == nil {
-			return nil
-		}
-		return v.PersistentVolumeClaimRetentionPolicy
-	}).(StatefulSetPersistentVolumeClaimRetentionPolicyPtrOutput)
 }
 
 // podManagementPolicy controls how pods are created during initial scale up, when replacing pods on nodes, or when scaling down. The default policy is `OrderedReady`, where pods are created in increasing order (pod-0, then pod-1, etc) and the controller will wait until each pod is ready before continuing. When scaling down, the pods are removed in the opposite order. The alternative policy is `Parallel` which will create pods in parallel to match the desired scale without waiting, and on scale down will delete all pods at once.
@@ -4950,8 +4774,6 @@ func init() {
 	pulumi.RegisterOutputType(StatefulSetConditionOutput{})
 	pulumi.RegisterOutputType(StatefulSetConditionArrayOutput{})
 	pulumi.RegisterOutputType(StatefulSetListTypeOutput{})
-	pulumi.RegisterOutputType(StatefulSetPersistentVolumeClaimRetentionPolicyOutput{})
-	pulumi.RegisterOutputType(StatefulSetPersistentVolumeClaimRetentionPolicyPtrOutput{})
 	pulumi.RegisterOutputType(StatefulSetSpecOutput{})
 	pulumi.RegisterOutputType(StatefulSetSpecPtrOutput{})
 	pulumi.RegisterOutputType(StatefulSetStatusOutput{})

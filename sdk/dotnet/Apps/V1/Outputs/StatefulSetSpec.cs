@@ -18,10 +18,6 @@ namespace Pulumi.Kubernetes.Types.Outputs.Apps.V1
         /// </summary>
         public readonly int MinReadySeconds;
         /// <summary>
-        /// persistentVolumeClaimRetentionPolicy describes the lifecycle of persistent volume claims created from volumeClaimTemplates. By default, all persistent volume claims are created as needed and retained until manually deleted. This policy allows the lifecycle to be altered, for example by deleting persistent volume claims when their stateful set is deleted, or when their pod is scaled down. This requires the StatefulSetAutoDeletePVC feature gate to be enabled, which is alpha.  +optional
-        /// </summary>
-        public readonly Pulumi.Kubernetes.Types.Outputs.Apps.V1.StatefulSetPersistentVolumeClaimRetentionPolicy PersistentVolumeClaimRetentionPolicy;
-        /// <summary>
         /// podManagementPolicy controls how pods are created during initial scale up, when replacing pods on nodes, or when scaling down. The default policy is `OrderedReady`, where pods are created in increasing order (pod-0, then pod-1, etc) and the controller will wait until each pod is ready before continuing. When scaling down, the pods are removed in the opposite order. The alternative policy is `Parallel` which will create pods in parallel to match the desired scale without waiting, and on scale down will delete all pods at once.
         /// </summary>
         public readonly string PodManagementPolicy;
@@ -58,8 +54,6 @@ namespace Pulumi.Kubernetes.Types.Outputs.Apps.V1
         private StatefulSetSpec(
             int minReadySeconds,
 
-            Pulumi.Kubernetes.Types.Outputs.Apps.V1.StatefulSetPersistentVolumeClaimRetentionPolicy persistentVolumeClaimRetentionPolicy,
-
             string podManagementPolicy,
 
             int replicas,
@@ -77,7 +71,6 @@ namespace Pulumi.Kubernetes.Types.Outputs.Apps.V1
             ImmutableArray<Pulumi.Kubernetes.Types.Outputs.Core.V1.PersistentVolumeClaim> volumeClaimTemplates)
         {
             MinReadySeconds = minReadySeconds;
-            PersistentVolumeClaimRetentionPolicy = persistentVolumeClaimRetentionPolicy;
             PodManagementPolicy = podManagementPolicy;
             Replicas = replicas;
             RevisionHistoryLimit = revisionHistoryLimit;
